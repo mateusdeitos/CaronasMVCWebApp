@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using System.Resources;
 
 namespace CaronasMVCWebApp
 {
@@ -24,8 +25,7 @@ namespace CaronasMVCWebApp
         {
             if (!optionsBuilder.IsConfigured)
             {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseMySql("server=localhost;port=3306;user=developer;password=123456;database=rides");
+                //optionsBuilder.UseMySql(optionsBuilder.Configuration.GetConnectionString("CaronasMVCWebAppContext")));
             }
         }
 
@@ -48,6 +48,14 @@ namespace CaronasMVCWebApp
             {
                 entity.ToTable("members");
 
+                entity.HasIndex(e => e.Email)
+                    .HasName("email_UNIQUE")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.Nome)
+                    .HasName("nome_UNIQUE")
+                    .IsUnique();
+
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Email)
@@ -58,8 +66,8 @@ namespace CaronasMVCWebApp
                     .HasColumnName("fone")
                     .HasColumnType("varchar(45)");
 
-                entity.Property(e => e.Name)
-                    .HasColumnName("name")
+                entity.Property(e => e.Nome)
+                    .HasColumnName("nome")
                     .HasColumnType("varchar(45)");
             });
 

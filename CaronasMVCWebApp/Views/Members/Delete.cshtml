@@ -1,39 +1,69 @@
 ﻿@model CaronasMVCWebApp.Members
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Deletar Participante";
 }
 
-<h2>Delete</h2>
+<h2>@ViewData["Title"]</h2>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Members</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Fone)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Fone)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+<h3>Tem certeza que deseja deletar esse participante?</h3>
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Delete">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Nome" class="control-label"></label>
+                <input asp-for="Nome" class="form-control" disabled/>
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" disabled/>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Fone" class="control-label"></label>
+                <input asp-for="Fone" class="form-control" disabled/>
+                <span asp-validation-for="Fone" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Deletar">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
+            <a asp-action="Index" data-toggle="tooltip" data-placement="bottom" title="Voltar" class="btn btn-default glyphicon glyphicon-arrow-left"></a>
+        </form>
+    </div>
 </div>
+@*<div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Nome)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Nome)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Fone)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Fone)
+            </dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Deletar">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
+            <a asp-action="Index" data-toggle="tooltip" data-placement="bottom" title="Voltar" class="btn btn-default glyphicon glyphicon-arrow-left"></a>
+        </form>
+    </div>*@
