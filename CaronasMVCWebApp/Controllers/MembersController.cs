@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using CaronasMVCWebApp;
 using CaronasMVCWebApp.Data;
+using CaronasMVCWebApp.Models;
 
 namespace CaronasMVCWebApp.Controllers
 {
@@ -54,7 +54,7 @@ namespace CaronasMVCWebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Email,Fone")] Members members)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Email,Fone")] Members members)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace CaronasMVCWebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email,Fone")] Members members)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Email,Fone")] Members members)
         {
             if (id != members.Id)
             {

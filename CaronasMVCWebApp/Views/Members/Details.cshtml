@@ -1,36 +1,52 @@
-﻿@model CaronasMVCWebApp.Members
+﻿@model CaronasMVCWebApp.Models.Members
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes";
 }
 
-<h2>Details</h2>
+<h2>Detalhes do participante</h2>
 
-<div>
-    <h4>Members</h4>
-    <hr />
+<div class="row">
+    <div class="col-md-4">
+        <form>
+            <div class="form-group">
+                <label asp-for="Nome" class="control-label"></label>
+                <input asp-for="Nome" class="form-control" disabled />
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" disabled />
+            </div>
+            <div class="form-group">
+                <label asp-for="Fone" class="control-label"></label>
+                <input asp-for="Fone" class="form-control" disabled />
+            </div>
+            <a asp-action="Index" data-toggle="tooltip" data-placement="bottom" title="Voltar" class="btn btn-default glyphicon glyphicon-arrow-left"></a>
+            <a asp-action="Edit" data-toggle="tooltip" data-placement="bottom" title="Alterar dados" class="btn btn-default glyphicon glyphicon-pencil" asp-route-id="@Model.Id"></a>
+            <a asp-action="Delete" data-toggle="tooltip" data-placement="bottom" title="Excluir participante" class="btn btn-danger glyphicon glyphicon-trash" asp-route-id="@Model.Id"></a>
+
+        </form>
+    </div>
+</div>
+@*<div>
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Fone)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Fone)
-        </dd>
-    </dl>
-</div>
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Fone)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Fone)
+            </dd>
+        </dl>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+    <a asp-action="Index" data-toggle="tooltip" data-placement="bottom" title="Voltar" class="btn btn-default glyphicon glyphicon-arrow-left"></a>
+    <a asp-action="Edit" data-toggle="tooltip" data-placement="bottom" title="Alterar dados" class="btn btn-default glyphicon glyphicon-pencil" asp-route-id="@Model.Id"></a>
+    <a asp-action="Delete" data-toggle="tooltip" data-placement="bottom" title="Excluir participante" class="btn btn-default glyphicon glyphicon-trash" asp-route-id="@Model.Id"></a>
+
+</div>*@
+

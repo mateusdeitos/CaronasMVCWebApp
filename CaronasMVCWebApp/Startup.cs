@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using CaronasMVCWebApp.Models;
 using CaronasMVCWebApp.Data;
 
 namespace CaronasMVCWebApp
@@ -35,9 +31,10 @@ namespace CaronasMVCWebApp
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddDbContext<DbContext>(options =>
+                   options.UseMySql(Configuration.GetConnectionString("CaronasMVCWebAppContext"), builder => builder.MigrationsAssembly("CaronasMVCWebAppContext")));
 
-            services.AddDbContext<CaronasMVCWebAppContext>(options =>
-                    options.UseMySql(Configuration.GetConnectionString("CaronasMVCWebAppContext")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using CaronasMVCWebApp;
+using CaronasMVCWebApp.Models;
 
 namespace CaronasMVCWebApp.Data
 {
@@ -14,6 +14,6 @@ namespace CaronasMVCWebApp.Data
         {
         }
 
-        public DbSet<CaronasMVCWebApp.Members> Members { get; set; }
+        public DbSet<CaronasMVCWebApp.Models.Members> Members { get; set; }
     }
 }

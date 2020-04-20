@@ -1,21 +1,20 @@
-﻿@model CaronasMVCWebApp.Members
+﻿@model CaronasMVCWebApp.Models.Members
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Novo Participante";
 }
 
-<h2>Create</h2>
+<h2>@ViewData["Title"]</h2>
 
-<h4>Members</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="Nome" class="control-label"></label>
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
@@ -28,15 +27,15 @@
                 <span asp-validation-for="Fone" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Salvar">
+                    <span class="glyphicon glyphicon-floppy-disk"></span>
+                </button>
+                <a asp-action="Index" data-toggle="tooltip" data-placement="bottom" title="Voltar" class="btn btn-default glyphicon glyphicon-arrow-left"></a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
