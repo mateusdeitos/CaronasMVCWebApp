@@ -2,14 +2,16 @@
 using CaronasMVCWebApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CaronasMVCWebApp.Migrations
 {
     [DbContext(typeof(CaronasMVCWebAppContext))]
-    partial class CaronasMVCWebAppContextModelSnapshot : ModelSnapshot
+    [Migration("20200421011222_Entity_Destinies_created")]
+    partial class Entity_Destinies_created
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

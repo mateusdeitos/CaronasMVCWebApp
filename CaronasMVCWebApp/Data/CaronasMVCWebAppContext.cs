@@ -15,5 +15,7 @@ namespace CaronasMVCWebApp.Data
         }
 
         public DbSet<CaronasMVCWebApp.Models.Members> Members { get; set; }
+
+        public DbSet<CaronasMVCWebApp.Models.Destinies> Destinies { get; set; }
     }
 }

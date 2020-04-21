@@ -1,12 +1,12 @@
-﻿@model CaronasMVCWebApp.Models.Members
+﻿@model CaronasMVCWebApp.Models.Destinies
 
 @{
-    ViewData["Title"] = "Deletar Participante";
+    ViewData["Title"] = "Deletar Destino";
 }
 
 <h2>@ViewData["Title"]</h2>
 
-<h3>Tem certeza que deseja deletar esse participante?</h3>
+<h3>Tem certeza que deseja deletar esse destino?</h3>
 
 
 <div class="row">
@@ -16,18 +16,13 @@
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="Nome" class="control-label"></label>
-                <input asp-for="Nome" class="form-control" disabled/>
+                <input asp-for="Nome" class="form-control" disabled />
                 <span asp-validation-for="Nome" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" disabled/>
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Fone" class="control-label"></label>
-                <input asp-for="Fone" class="form-control" disabled/>
-                <span asp-validation-for="Fone" class="text-danger"></span>
+                <label asp-for="CustoPorPassageiro" class="control-label"></label>
+                <input asp-for="CustoPorPassageiro" class="form-control" disabled />
+                <span asp-validation-for="CustoPorPassageiro" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Deletar">
                 <span class="glyphicon glyphicon-trash"></span>
