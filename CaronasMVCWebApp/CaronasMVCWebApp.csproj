@@ -5,10 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="rides\**" />
-    <Content Remove="rides\**" />
-    <EmbeddedResource Remove="rides\**" />
-    <None Remove="rides\**" />
+    <Compile Remove="Ride\**" />
+    <Content Remove="Ride\**" />
+    <EmbeddedResource Remove="Ride\**" />
+    <None Remove="Ride\**" />
   </ItemGroup>
 
   <ItemGroup>

@@ -5,16 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using CaronasMVCWebApp.Data;
 using CaronasMVCWebApp.Models;
 
 namespace CaronasMVCWebApp.Controllers
 {
     public class DestiniesController : Controller
     {
-        private readonly CaronasMVCWebAppContext _context;
+        private readonly caronas_app_dbContext _context;
 
-        public DestiniesController(CaronasMVCWebAppContext context)
+        public DestiniesController(caronas_app_dbContext context)
         {
             _context = context;
         }
@@ -22,7 +21,7 @@ namespace CaronasMVCWebApp.Controllers
         // GET: Destinies
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Destinies.ToListAsync());
+            return View(await _context.Destiny.ToListAsync());
         }
 
         // GET: Destinies/Details/5
@@ -33,14 +32,14 @@ namespace CaronasMVCWebApp.Controllers
                 return NotFound();
             }
 
-            var destinies = await _context.Destinies
+            var destiny = await _context.Destiny
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (destinies == null)
+            if (destiny == null)
             {
                 return NotFound();
             }
 
-            return View(destinies);
+            return View(destiny);
         }
 
         // GET: Destinies/Create
@@ -54,15 +53,15 @@ namespace CaronasMVCWebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,CustoPorPassageiro")] Destinies destinies)
+        public async Task<IActionResult> Create([Bind("Id,Name,CostPerPassenger")] Destiny destiny)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(destinies);
+                _context.Add(destiny);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(destinies);
+            return View(destiny);
         }
 
         // GET: Destinies/Edit/5
@@ -73,12 +72,12 @@ namespace CaronasMVCWebApp.Controllers
                 return NotFound();
             }
 
-            var destinies = await _context.Destinies.FindAsync(id);
-            if (destinies == null)
+            var destiny = await _context.Destiny.FindAsync(id);
+            if (destiny == null)
             {
                 return NotFound();
             }
-            return View(destinies);
+            return View(destiny);
         }
 
         // POST: Destinies/Edit/5
@@ -86,9 +85,9 @@ namespace CaronasMVCWebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,CustoPorPassageiro")] Destinies destinies)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CostPerPassenger")] Destiny destiny)
         {
-            if (id != destinies.Id)
+            if (id != destiny.Id)
             {
                 return NotFound();
             }
@@ -97,12 +96,12 @@ namespace CaronasMVCWebApp.Controllers
             {
                 try
                 {
-                    _context.Update(destinies);
+                    _context.Update(destiny);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DestiniesExists(destinies.Id))
+                    if (!DestinyExists(destiny.Id))
                     {
                         return NotFound();
                     }
@@ -113,7 +112,7 @@ namespace CaronasMVCWebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(destinies);
+            return View(destiny);
         }
 
         // GET: Destinies/Delete/5
@@ -124,14 +123,14 @@ namespace CaronasMVCWebApp.Controllers
                 return NotFound();
             }
 
-            var destinies = await _context.Destinies
+            var destiny = await _context.Destiny
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (destinies == null)
+            if (destiny == null)
             {
                 return NotFound();
             }
 
-            return View(destinies);
+            return View(destiny);
         }
 
         // POST: Destinies/Delete/5
@@ -139,15 +138,15 @@ namespace CaronasMVCWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var destinies = await _context.Destinies.FindAsync(id);
-            _context.Destinies.Remove(destinies);
+            var destiny = await _context.Destiny.FindAsync(id);
+            _context.Destiny.Remove(destiny);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DestiniesExists(int id)
+        private bool DestinyExists(int id)
         {
-            return _context.Destinies.Any(e => e.Id == id);
+            return _context.Destiny.Any(e => e.Id == id);
         }
     }
 }

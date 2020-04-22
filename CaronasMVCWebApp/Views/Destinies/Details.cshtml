@@ -1,4 +1,4 @@
-﻿@model CaronasMVCWebApp.Models.Destinies
+﻿@model CaronasMVCWebApp.Models.Destiny
 
 @{
     ViewData["Title"] = "Detalhes";
@@ -10,12 +10,12 @@
     <div class="col-md-4">
         <form>
             <div class="form-group">
-                <label asp-for="Nome" class="control-label"></label>
-                <input asp-for="Nome" class="form-control" disabled />
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" disabled />
             </div>
             <div class="form-group">
-                <label asp-for="CustoPorPassageiro" class="control-label"></label>
-                <input asp-for="CustoPorPassageiro" class="form-control" disabled />
+                <label asp-for="CostPerPassenger" class="control-label"></label>
+                <input asp-for="CostPerPassenger" class="form-control" disabled />
             </div>
             <a asp-action="Index" data-toggle="tooltip" data-placement="bottom" title="Voltar" class="btn btn-default glyphicon glyphicon-arrow-left"></a>
             <a asp-action="Edit" data-toggle="tooltip" data-placement="bottom" title="Alterar dados" class="btn btn-default glyphicon glyphicon-pencil" asp-route-id="@Model.Id"></a>

@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using CaronasMVCWebApp.Data;
+using CaronasMVCWebApp.Services;
+using CaronasMVCWebApp.Models;
 
 namespace CaronasMVCWebApp
 {
@@ -30,8 +31,12 @@ namespace CaronasMVCWebApp
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddDbContext<CaronasMVCWebAppContext>(options => options.UseMySql(Configuration.GetConnectionString("CaronasMVCWebAppContext"), builder =>
-                                builder.MigrationsAssembly("CaronasMVCWebApp")));
+            services.AddDbContext<caronas_app_dbContext>(options => options.UseMySql(Configuration.GetConnectionString("caronas_app_dbContext")));
+
+            services.AddScoped<MemberService>();
+            services.AddScoped<DestinyService>();
+            services.AddScoped<RideService>();
+            services.AddScoped<PassengerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

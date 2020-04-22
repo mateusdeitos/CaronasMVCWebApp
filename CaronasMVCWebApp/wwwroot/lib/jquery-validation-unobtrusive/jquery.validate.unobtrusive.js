@@ -2,7 +2,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 // @version v3.2.9
 
-/*jslint white: true, browser: true, onevar: true, undef: true, nomen: true, eqeqeq: true, plusplus: true, bitwise: true, regexp: true, newcap: true, immed: true, strict: false */
+/*jslint white: true, browser: true, onevar: true, undef: true, Namen: true, eqeqeq: true, plusplus: true, bitwise: true, regexp: true, newcap: true, immed: true, strict: false */
 /*global document: false, jQuery: false */
 
 (function (factory) {

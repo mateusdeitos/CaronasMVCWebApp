@@ -5,16 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using CaronasMVCWebApp.Data;
 using CaronasMVCWebApp.Models;
 
 namespace CaronasMVCWebApp.Controllers
 {
     public class MembersController : Controller
     {
-        private readonly CaronasMVCWebAppContext _context;
+        private readonly caronas_app_dbContext _context;
 
-        public MembersController(CaronasMVCWebAppContext context)
+        public MembersController(caronas_app_dbContext context)
         {
             _context = context;
         }
@@ -22,7 +21,7 @@ namespace CaronasMVCWebApp.Controllers
         // GET: Members
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Members.ToListAsync());
+            return View(await _context.Member.ToListAsync());
         }
 
         // GET: Members/Details/5
@@ -33,14 +32,14 @@ namespace CaronasMVCWebApp.Controllers
                 return NotFound();
             }
 
-            var members = await _context.Members
+            var member = await _context.Member
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (members == null)
+            if (member == null)
             {
                 return NotFound();
             }
 
-            return View(members);
+            return View(member);
         }
 
         // GET: Members/Create
@@ -54,15 +53,15 @@ namespace CaronasMVCWebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Email,Fone")] Members members)
+        public async Task<IActionResult> Create([Bind("Id,Name,Email,Phone")] Member member)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(members);
+                _context.Add(member);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(members);
+            return View(member);
         }
 
         // GET: Members/Edit/5
@@ -73,12 +72,12 @@ namespace CaronasMVCWebApp.Controllers
                 return NotFound();
             }
 
-            var members = await _context.Members.FindAsync(id);
-            if (members == null)
+            var member = await _context.Member.FindAsync(id);
+            if (member == null)
             {
                 return NotFound();
             }
-            return View(members);
+            return View(member);
         }
 
         // POST: Members/Edit/5
@@ -86,9 +85,9 @@ namespace CaronasMVCWebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Email,Fone")] Members members)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email,Phone")] Member member)
         {
-            if (id != members.Id)
+            if (id != member.Id)
             {
                 return NotFound();
             }
@@ -97,12 +96,12 @@ namespace CaronasMVCWebApp.Controllers
             {
                 try
                 {
-                    _context.Update(members);
+                    _context.Update(member);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MembersExists(members.Id))
+                    if (!MemberExists(member.Id))
                     {
                         return NotFound();
                     }
@@ -113,7 +112,7 @@ namespace CaronasMVCWebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(members);
+            return View(member);
         }
 
         // GET: Members/Delete/5
@@ -124,14 +123,14 @@ namespace CaronasMVCWebApp.Controllers
                 return NotFound();
             }
 
-            var members = await _context.Members
+            var member = await _context.Member
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (members == null)
+            if (member == null)
             {
                 return NotFound();
             }
 
-            return View(members);
+            return View(member);
         }
 
         // POST: Members/Delete/5
@@ -139,15 +138,15 @@ namespace CaronasMVCWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var members = await _context.Members.FindAsync(id);
-            _context.Members.Remove(members);
+            var member = await _context.Member.FindAsync(id);
+            _context.Member.Remove(member);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MembersExists(int id)
+        private bool MemberExists(int id)
         {
-            return _context.Members.Any(e => e.Id == id);
+            return _context.Member.Any(e => e.Id == id);
         }
     }
 }

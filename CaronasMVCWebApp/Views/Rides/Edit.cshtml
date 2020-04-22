@@ -1,25 +1,37 @@
-﻿@model CaronasMVCWebApp.Models.Rides
+﻿@model CaronasMVCWebApp.Models.ViewModels.RideFormViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = $"Viagem na data {Model.Ride.Date.ToString("dd/MM/yyyy")}";
 }
 
-<h2>Edit</h2>
+<h2>@ViewData["Title"]</h2>
 
-<h4>Rides</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
+            <input type="hidden" asp-for="Ride.Id" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="Data" class="control-label"></label>
-                <input asp-for="Data" class="form-control" />
-                <span asp-validation-for="Data" class="text-danger"></span>
+                <label for="DefaultDate" asp-for="Ride.Date" class="control-label"></label>
+                <input asp-for="Ride.Date" class="form-control" />
+                <span asp-validation-for="Ride.Date" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <label asp-for="Ride.DestinyId" class="control-label"></label>
+                <select asp-for="Ride.DestinyId" asp-items="@(new SelectList(Model.Destinies,"Id",
+                    "Name"))" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ride.DriverId" class="control-label"></label>
+                <select asp-for="Ride.DriverId" asp-items="@(new SelectList(Model.Passengers,"ID",
+                    "Display"))" class="form-control"></select>
+            </div>
+            <div>
+                @Html.EditorFor(x => x.Passengers)
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </form>
     </div>
