@@ -7,8 +7,8 @@ namespace CaronasMVCWebApp.Models
     {
         public Member()
         {
-            Passenger = new HashSet<Passenger>();
-            Ride = new HashSet<Ride>();
+            RideDriver = new HashSet<Ride>();
+            RidePassenger = new HashSet<Ride>();
         }
 
         public int Id { get; set; }
@@ -16,7 +16,7 @@ namespace CaronasMVCWebApp.Models
         public string Email { get; set; }
         public string Phone { get; set; }
 
-        public ICollection<Passenger> Passenger { get; set; }
-        public ICollection<Ride> Ride { get; set; }
+        public ICollection<Ride> RideDriver { get; set; }
+        public ICollection<Ride> RidePassenger { get; set; }
     }
 }

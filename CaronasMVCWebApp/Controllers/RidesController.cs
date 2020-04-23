@@ -19,26 +19,37 @@ namespace CaronasMVCWebApp.Controllers
         private readonly MemberService _memberService;
         private readonly DestinyService _destinyService;
         private readonly RideService _rideService;
-        private readonly PassengerService _passengerService;
 
-        public RidesController(caronas_app_dbContext context, 
-                               MemberService memberService, 
-                               DestinyService destinyService, 
-                               RideService rideService,
-                               PassengerService passengerService)
+        public RidesController(caronas_app_dbContext context,
+                               MemberService memberService,
+                               DestinyService destinyService,
+                               RideService rideService)
         {
             _context = context;
             _memberService = memberService;
             _destinyService = destinyService;
             _rideService = rideService;
-            _passengerService = passengerService;
         }
 
         // GET: Rides
         public async Task<IActionResult> Index()
         {
-            var caronas_app_dbContext = _context.Ride.Include(r => r.Destiny).Include(r => r.Driver);
-            return View(await caronas_app_dbContext.ToListAsync());
+            var caronas_app_dbContext = await _context.Ride.Include(r => r.Destiny).Include(r => r.Driver).ToListAsync();
+            var results = caronas_app_dbContext.Select(r => r.Id).Distinct().ToList();
+
+            List<Ride> rides = new List<Ride>();
+            foreach (int id in results)
+            {
+                var ride = await _context.Ride.Where(r => r.Id == id).FirstOrDefaultAsync();
+                ride.Destiny = await _destinyService.FindByIdAsync(ride.DestinyId);
+                ride.Driver = await _memberService.FindByIdAsync(ride.DriverId);
+                rides.Add(ride);
+                
+
+            }
+
+
+            return View(rides);
         }
 
         // GET: Rides/Details/5
@@ -122,7 +133,7 @@ namespace CaronasMVCWebApp.Controllers
                 return NotFound();
             }
 
-            Ride ride = await _rideService.FindByIdAsync(id);
+            Ride ride = await _context.Ride.Where(r => r.Id == id).FirstOrDefaultAsync();
             if (ride == null)
             {
                 return NotFound();
@@ -130,9 +141,9 @@ namespace CaronasMVCWebApp.Controllers
 
             RideFormViewModel viewModel = new RideFormViewModel()
             {
-                Ride = ride
+                Ride = await _context.Ride.Where(r => r.Id == id).FirstOrDefaultAsync()
             };
-            var passengers = await _passengerService.FindByRideIdAsync(id);
+            var passengers = await _rideService.FindPassengersByRideId(id);
             var allMembers = await _memberService.FindAllAsync();
             var allDestinies = await _destinyService.FindAllAsync();
             viewModel.Destinies = allDestinies;
@@ -143,7 +154,7 @@ namespace CaronasMVCWebApp.Controllers
                 {
                     ID = member.Id,
                     Display = member.Name,
-                    IsChecked = passengers.Where(x=>x.PassengerId == member.Id).Any()
+                    IsChecked = passengers.Where(x => x.PassengerId == member.Id).Any()
                 });
             }
             viewModel.Passengers = checkBoxListItems;
@@ -183,7 +194,7 @@ namespace CaronasMVCWebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            var passengers = await _passengerService.FindByRideIdAsync(id);
+            var passengers = await _rideService.FindPassengersByRideId(id);
             var allMembers = await _memberService.FindAllAsync();
             var allDestinies = await _destinyService.FindAllAsync();
             viewModel.Destinies = allDestinies;
@@ -209,10 +220,7 @@ namespace CaronasMVCWebApp.Controllers
                 return NotFound();
             }
 
-            var ride = await _context.Ride
-                .Include(r => r.Destiny)
-                .Include(r => r.Driver)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var ride = await _context.Ride.FirstOrDefaultAsync(r => r.Id == id);
             if (ride == null)
             {
                 return NotFound();
@@ -226,9 +234,13 @@ namespace CaronasMVCWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var ride = await _context.Ride.FindAsync(id);
-            _context.Ride.Remove(ride);
-            await _context.SaveChangesAsync();
+            var rides = await _context.Ride.Where(r => r.Id == id).ToListAsync();
+            foreach (var ride in rides)
+            {
+
+                _context.Ride.Remove(ride);
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
         }
 

@@ -16,19 +16,19 @@ namespace CaronasMVCWebApp.Services
             _context = context;
         }
 
-        public async Task<List<Passenger>> FindAllAsync()
-        {
-            return await _context.Passenger.Include(x => x.Member).OrderBy(x => x.Member.Name).ToListAsync();
-        }
+        //public async Task<List<Passenger>> FindAllAsync()
+        //{
+        //    return await _context.Include(x => x.Member).OrderBy(x => x.Member.Name).ToListAsync();
+        //}
 
-        internal async Task<Passenger> FindByIdAsync(int passengerId)
-        {
-            return await _context.Passenger.FirstOrDefaultAsync(x => x.PassengerId == passengerId);
-        }
+        //internal async Task<Passenger> FindByIdAsync(int passengerId)
+        //{
+        //    return await _context.Passenger.FirstOrDefaultAsync(x => x.PassengerId == passengerId);
+        //}
 
-        internal async Task<List<Passenger>> FindByRideIdAsync(int? rideId)
-        {
-            return await _context.Passenger.Where(x => x.RideId == rideId).ToListAsync();
-        }
+        //internal async Task<List<Passenger>> FindByRideIdAsync(int? rideId)
+        //{
+        //    return await _context.Passenger.Where(x => x.RideId == rideId).ToListAsync();
+        //}
     }
 }

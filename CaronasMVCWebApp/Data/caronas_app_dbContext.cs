@@ -18,7 +18,6 @@ namespace CaronasMVCWebApp.Models
         public virtual DbSet<Destiny> Destiny { get; set; }
         public virtual DbSet<Efmigrationshistory> Efmigrationshistory { get; set; }
         public virtual DbSet<Member> Member { get; set; }
-        public virtual DbSet<Passenger> Passenger { get; set; }
         public virtual DbSet<Ride> Ride { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -69,34 +68,10 @@ namespace CaronasMVCWebApp.Models
                 entity.Property(e => e.Phone).HasColumnType("longtext");
             });
 
-            modelBuilder.Entity<Passenger>(entity =>
-            {
-                entity.HasKey(e => new { e.PassengerId, e.RideId });
-
-                entity.ToTable("passenger");
-
-                entity.HasIndex(e => e.RideId)
-                    .HasName("ride_id_idx");
-
-                entity.Property(e => e.PassengerId).HasColumnName("passengerId");
-
-                entity.Property(e => e.RideId).HasColumnName("rideId");
-
-                entity.HasOne(d => d.Member)
-                    .WithMany(p => p.Passenger)
-                    .HasForeignKey(d => d.PassengerId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("member_id");
-
-                entity.HasOne(d => d.Ride)
-                    .WithMany(p => p.Passenger)
-                    .HasForeignKey(d => d.RideId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("ride_id");
-            });
-
             modelBuilder.Entity<Ride>(entity =>
             {
+                entity.HasKey(e => new { e.Id, e.DestinyId, e.DriverId, e.PassengerId });
+
                 entity.ToTable("ride");
 
                 entity.HasIndex(e => e.DestinyId)
@@ -105,15 +80,24 @@ namespace CaronasMVCWebApp.Models
                 entity.HasIndex(e => e.DriverId)
                     .HasName("IX_Ride_DriverId");
 
+                entity.HasIndex(e => e.PassengerId)
+                    .HasName("FK_Ride_Member_PassengerId_idx");
+
                 entity.HasOne(d => d.Destiny)
                     .WithMany(p => p.Ride)
                     .HasForeignKey(d => d.DestinyId)
                     .HasConstraintName("FK_Ride_Destiny_DestinyId");
 
                 entity.HasOne(d => d.Driver)
-                    .WithMany(p => p.Ride)
+                    .WithMany(p => p.RideDriver)
                     .HasForeignKey(d => d.DriverId)
                     .HasConstraintName("FK_Ride_Member_DriverId");
+
+                entity.HasOne(d => d.Passenger)
+                    .WithMany(p => p.RidePassenger)
+                    .HasForeignKey(d => d.PassengerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Ride_Member_PassengerId");
             });
         }
     }

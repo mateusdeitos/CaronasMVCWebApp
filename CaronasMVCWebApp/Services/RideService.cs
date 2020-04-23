@@ -21,49 +21,59 @@ namespace CaronasMVCWebApp.Services
             return await _context.Ride.OrderBy(x => x.Date).ToListAsync();
         }
 
-        internal async Task<Ride> FindByIdAsync(int? rideId)
+        internal async Task<List<Ride>> FindByIdAsync(int? rideId)
         {
-            return await _context.Ride.FirstOrDefaultAsync(x => x.Id == rideId);
+            return await _context.Ride.Where(x => x.Id == rideId).ToListAsync();
         }
 
 
         public async Task InsertAsync(Ride obj, List<int> passengers)
         {
-            var ride = new Ride()
-            {
-                Date = obj.Date,
-                DestinyId = obj.DestinyId,
-                Destiny = obj.Destiny,
-                Driver = obj.Driver,
-                DriverId = obj.DriverId,
-                Id = obj.Id
-            };
 
+            int nextId = await FindNextIdAsync();
             foreach (var passengerID in passengers)
             {
-                var passenger = new Passenger { PassengerId = passengerID, RideId = ride.Id};
-                ride.Passenger.Add(passenger);
+                var ride = new Ride
+                {
+                    Id = nextId,
+                    Date = obj.Date,
+                    DestinyId = obj.DestinyId,
+                    DriverId = obj.DriverId,
+                    PassengerId = passengerID
+                };
+                _context.Add(ride);
+                await _context.SaveChangesAsync();
             }
-            _context.Add(ride);
-            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(int id, DateTime date, int destinyId, int driverId, List<int> passengers)
         {
-            Ride ride = await _context.Ride.Where(x => x.Id == id).FirstAsync();
-            ride.Date = date;
-            ride.DestinyId = destinyId;
-            ride.DriverId = driverId;
-            ride.Passenger.Clear();
-
-            foreach (var passengerID in passengers)
+            var rides = await _context.Ride.Where(x => x.Id == id).ToListAsync();
+            foreach (var ride in rides)
             {
-                var passenger = new Passenger { PassengerId = passengerID, RideId = ride.Id };
-                ride.Passenger.Add(passenger);
+                _context.Ride.Remove(ride);
+                await _context.SaveChangesAsync();
             }
-            _context.Update(ride);
+
+            Ride newRide = new Ride();
+            newRide.Date = date;
+            newRide.DestinyId = destinyId;
+            newRide.DriverId = driverId;
+
+            await InsertAsync(newRide, passengers);
             await _context.SaveChangesAsync();
 
+
+        }
+
+        public async Task<int> FindNextIdAsync()
+        {
+            return await _context.Ride.AnyAsync() ? await _context.Ride.MaxAsync(r => r.Id + 1) : 1 ;
+        }
+
+        internal async Task<List<Ride>> FindPassengersByRideId(int? id)
+        {
+            return await _context.Ride.Where(r => r.Id == id).ToListAsync();
         }
     }
 }

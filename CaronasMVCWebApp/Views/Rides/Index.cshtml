@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CaronasMVCWebApp.Models.Ride>
+﻿@model List<CaronasMVCWebApp.Models.Ride>
 
 @{
     ViewData["Title"] = "Index";
@@ -7,22 +7,34 @@
 <h2>Index</h2>
 
 <p>
-    <a asp-action="Create" class="btn btn-default">Nova Ride</a>
+    <a asp-action="Create" class="btn btn-default">Nova Viagem</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Date)
+                @Html.DisplayNameFor(Model => Model[0].Date)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(Model => Model[0].Driver.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(Model => Model[0].Destiny.Name)
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Driver.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Destiny.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -30,6 +42,6 @@
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>
