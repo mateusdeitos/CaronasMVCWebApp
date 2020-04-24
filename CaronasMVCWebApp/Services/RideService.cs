@@ -1,4 +1,5 @@
 ﻿using CaronasMVCWebApp.Models;
+using CaronasMVCWebApp.Models.Enums;
 using CaronasMVCWebApp.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,10 +12,16 @@ namespace CaronasMVCWebApp.Services
     public class RideService
     {
         private readonly caronas_app_dbContext _context;
+        private readonly MemberService _memberService;
+        private readonly DestinyService _destinyService;
 
-        public RideService(caronas_app_dbContext context)
+        public RideService(caronas_app_dbContext context,
+                               MemberService memberService,
+                               DestinyService destinyService)
         {
             _context = context;
+            _memberService = memberService;
+            _destinyService = destinyService;
         }
         public async Task<List<Ride>> FindAllAsync()
         {
@@ -39,7 +46,9 @@ namespace CaronasMVCWebApp.Services
                     Date = obj.Date,
                     DestinyId = obj.DestinyId,
                     DriverId = obj.DriverId,
-                    PassengerId = passengerID
+                    PassengerId = passengerID,
+                    PaymentStatus = PaymentStatus.NotPaid,
+                    RoundTrip = RoundTrip.RoundTrip
                 };
                 _context.Add(ride);
                 await _context.SaveChangesAsync();
@@ -74,6 +83,34 @@ namespace CaronasMVCWebApp.Services
         internal async Task<List<Ride>> FindPassengersByRideId(int? id)
         {
             return await _context.Ride.Where(r => r.Id == id).ToListAsync();
+        }
+
+        internal List<RoundTrip> FindAllRoundTripValues()
+        {
+            return  Enum.GetValues(typeof(RoundTrip)).Cast<RoundTrip>().ToList();
+        }
+
+        public async Task<RideFormViewModel> StartRideViewModel(RideFormViewModel viewModel)
+        {
+
+            var allMembers = await _memberService.FindAllAsync();
+            var allDestinies = await _destinyService.FindAllAsync();
+            //var allRoundTrip = FindAllRoundTripValues();
+            viewModel.Destinies = allDestinies;
+            //viewModel.RoundTrips = allRoundTrip;
+            var checkBoxListItems = new List<CheckBoxListItem>();
+            foreach (var member in allMembers)
+            {
+                checkBoxListItems.Add(new CheckBoxListItem()
+                {
+                    ID = member.Id,
+                    Display = member.Name,
+                    IsChecked = false
+                });
+            }
+            viewModel.Passengers = checkBoxListItems;
+
+            return viewModel;
         }
     }
 }

@@ -1,7 +1,9 @@
-﻿@model CaronasMVCWebApp.Models.ViewModels.RideFormViewModel
+﻿@using CaronasMVCWebApp.Models.Enums
+@using CaronasMVCWebApp.Models
+@model CaronasMVCWebApp.Models.ViewModels.RideFormViewModel
 
 @{
-    ViewData["Title"] = "Nova Ride";
+    ViewData["Title"] = "Nova Viagem";
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -26,18 +28,29 @@
                 <select asp-for="Ride.DriverId" asp-items="@(new SelectList(Model.Passengers, "ID",
                     "Display"))" class="form-control"></select>
             </div>
-                @Html.EditorFor(x => x.Passengers)
-                
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                @Html.RadioButtonFor(r => r.Ride.RoundTrip, RoundTrip.RoundTrip, new { id = RoundTrip.RoundTrip })
+                <label for=@RoundTrip.RoundTrip>Ida e volta</label>
+                <br />
+                @Html.RadioButtonFor(r => r.Ride.RoundTrip, RoundTrip.HalfTrip, new { id = RoundTrip.HalfTrip })
+                <label for=@RoundTrip.HalfTrip>Apenas ida/volta</label>
+            </div>
+            <div>
+                @Html.EditorFor(x => x.Passengers)
+            </div>
+            <span class="text-danger">@ViewData["Alerta_Checkbox"]</span>
+
+            <br />
+            <div class="form-group">
+                <button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Salvar">
+                    <span class="glyphicon glyphicon-floppy-disk"></span>
+                </button>
+                <a asp-action="Index" data-toggle="tooltip" data-placement="bottom" title="Voltar" class="btn btn-default glyphicon glyphicon-arrow-left"></a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

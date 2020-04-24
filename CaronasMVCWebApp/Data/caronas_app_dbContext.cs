@@ -83,6 +83,14 @@ namespace CaronasMVCWebApp.Models
                 entity.HasIndex(e => e.PassengerId)
                     .HasName("FK_Ride_Member_PassengerId_idx");
 
+                entity.Property(e => e.PaymentStatus)
+                    .HasColumnName("paymentStatus")
+                    .HasDefaultValueSql("'0'");
+
+                entity.Property(e => e.RoundTrip)
+                    .HasColumnName("roundTrip")
+                    .HasDefaultValueSql("'0'");
+
                 entity.HasOne(d => d.Destiny)
                     .WithMany(p => p.Ride)
                     .HasForeignKey(d => d.DestinyId)

@@ -10,6 +10,8 @@ using CaronasMVCWebApp.Services;
 using System.Security.Cryptography;
 using CaronasMVCWebApp.Models.ViewModels;
 using System.Net.WebSockets;
+using CaronasMVCWebApp.Models.Enums;
+
 
 namespace CaronasMVCWebApp.Controllers
 {
@@ -76,20 +78,7 @@ namespace CaronasMVCWebApp.Controllers
         public async Task<IActionResult> Create()
         {
             RideFormViewModel viewModel = new RideFormViewModel();
-            var allMembers = await _memberService.FindAllAsync();
-            var allDestinies = await _destinyService.FindAllAsync();
-            viewModel.Destinies = allDestinies;
-            var checkBoxListItems = new List<CheckBoxListItem>();
-            foreach (var member in allMembers)
-            {
-                checkBoxListItems.Add(new CheckBoxListItem()
-                {
-                    ID = member.Id,
-                    Display = member.Name,
-                    IsChecked = false
-                });
-            }
-            viewModel.Passengers = checkBoxListItems;
+            viewModel = await _rideService.StartRideViewModel(viewModel);
             return View(viewModel);
         }
 
@@ -103,23 +92,27 @@ namespace CaronasMVCWebApp.Controllers
             if (ModelState.IsValid)
             {
                 var Passengers = viewModel.Passengers.Where(x => x.IsChecked).Select(x => x.ID).ToList();
-                await _rideService.InsertAsync(viewModel.Ride, Passengers);
-                return RedirectToAction(nameof(Index));
-            }
-            var allMembers = await _memberService.FindAllAsync();
-            var allDestinies = await _destinyService.FindAllAsync();
-            viewModel.Destinies = allDestinies;
-            var checkBoxListItems = new List<CheckBoxListItem>();
-            foreach (var member in allMembers)
-            {
-                checkBoxListItems.Add(new CheckBoxListItem()
+
+                //Validate if any passenger was selected
+                if (Passengers.Count > 0)
                 {
-                    ID = member.Id,
-                    Display = member.Name,
-                    IsChecked = false
-                });
+                    //Validate if the Driver is also a Passenger
+                    if (!Passengers.Contains(viewModel.Ride.DriverId))
+                    {
+                        await _rideService.InsertAsync(viewModel.Ride, Passengers);
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        ViewData["Alerta_Checkbox"] = "O motorista não pode ser um dos passageiros";
+                    }
+                }
+                else
+                {
+                    ViewData["Alerta_Checkbox"] = "Selecione pelo menos 1 passageiros";
+                }
             }
-            viewModel.Passengers = checkBoxListItems;
+            viewModel = await _rideService.StartRideViewModel(viewModel);
             return View(viewModel);
         }
 
