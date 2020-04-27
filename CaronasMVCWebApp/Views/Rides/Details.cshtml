@@ -1,24 +1,66 @@
-﻿@model CaronasMVCWebApp.Models.Ride
+﻿@using CaronasMVCWebApp.Models.Enums
+@using CaronasMVCWebApp.Models.ViewModels
+@model CaronasMVCWebApp.Models.ViewModels.RideFormViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = $"Viagem na data {Model.Ride.Date.ToString("dd/MM/yyyy")}";
 }
 
-<h2>Details</h2>
+<h2>@ViewData["Title"]</h2>
 
-<div>
-    <h4>Ride</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Date)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Date)
-        </dd>
-    </dl>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <input type="hidden" asp-for="Ride.Id" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label for="DefaultDate" asp-for="Ride.Date" class="control-label"></label>
+                <input asp-for="Ride.Date" class="form-control" disabled />
+                <span asp-validation-for="Ride.Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ride.DestinyId" class="control-label"></label>
+                <select asp-for="Ride.DestinyId" asp-items="@(new SelectList(Model.Destinies,"Id",
+                    "Name"))" class="form-control" disabled></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ride.DriverId" class="control-label"></label>
+                <select asp-for="Ride.DriverId" asp-items="@(new SelectList(Model.Passengers,"ID",
+                    "Display"))" class="form-control" disabled></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ride.RoundTrip" class="control-label"></label><br />
+                <input asp-for="@ViewData["RoundTripValue"]" class="form-control" disabled />
+            </div>
+
+            <label asp-for="Ride.PassengerId" class="control-label"></label><br />
+            <table class="table table-responsive table-striped">
+                <tbody>
+                    @foreach (CheckBoxListItem p in Model.Passengers)
+                    {
+                        @if (p.IsChecked)
+                        {
+                            <tr>
+                                <td>
+                                    @p.Display
+                                </td>
+
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+            <div class="form-group">
+                <a asp-action="Edit" asp-route-id="@Model.Ride.Id" data-toggle="tooltip" data-placement="bottom" title="Alterar" class="btn btn-default glyphicon glyphicon-pencil"></a>
+                <a asp-action="Delete" asp-route-id="@Model.Ride.Id" data-toggle="tooltip" data-placement="bottom" title="Deletar" class="btn btn-danger glyphicon glyphicon-trash"></a>
+                <a asp-action="Index" data-toggle="tooltip" data-placement="bottom" title="Voltar" class="btn btn-default glyphicon glyphicon-arrow-left"></a>
+            </div>
+        </form>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

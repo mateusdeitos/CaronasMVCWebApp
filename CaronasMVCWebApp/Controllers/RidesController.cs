@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CaronasMVCWebApp.Models;
 using CaronasMVCWebApp.Services;
-using System.Security.Cryptography;
 using CaronasMVCWebApp.Models.ViewModels;
-using System.Net.WebSockets;
+using System;
 using CaronasMVCWebApp.Models.Enums;
-
 
 namespace CaronasMVCWebApp.Controllers
 {
@@ -36,7 +32,7 @@ namespace CaronasMVCWebApp.Controllers
         // GET: Rides
         public async Task<IActionResult> Index()
         {
-            var caronas_app_dbContext = await _context.Ride.Include(r => r.Destiny).Include(r => r.Driver).ToListAsync();
+            var caronas_app_dbContext = await _context.Ride.Include(r => r.Destiny).Include(r => r.Driver).OrderByDescending(r=>r.Date).ToListAsync();
             var results = caronas_app_dbContext.Select(r => r.Id).Distinct().ToList();
 
             List<Ride> rides = new List<Ride>();
@@ -45,39 +41,46 @@ namespace CaronasMVCWebApp.Controllers
                 var ride = await _context.Ride.Where(r => r.Id == id).FirstOrDefaultAsync();
                 ride.Destiny = await _destinyService.FindByIdAsync(ride.DestinyId);
                 ride.Driver = await _memberService.FindByIdAsync(ride.DriverId);
+                var passengers = await _rideService.FindPassengersByRideId(ride.Id);
+                ride.PassengerId = passengers.Count();
                 rides.Add(ride);
                 
-
             }
-
-
             return View(rides);
         }
 
         // GET: Rides/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var ride = await _context.Ride
-                .Include(r => r.Destiny)
-                .Include(r => r.Driver)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            Ride ride = await _context.Ride.Where(r => r.Id == id).FirstOrDefaultAsync();
             if (ride == null)
             {
                 return NotFound();
             }
 
-            return View(ride);
+            RideFormViewModel viewModel = new RideFormViewModel()
+            {
+                Ride = await _context.Ride.Where(r => r.Id == id).FirstOrDefaultAsync()
+            };
+            viewModel = await _rideService.StartRideViewModel(viewModel);
+
+            //int nextId = obj.Id == 0 ? await FindNextIdAsync() : obj.Id;
+            var roundTripValue = viewModel.Ride.RoundTrip.Equals(RoundTrip.RoundTrip) ? "Ida e volta" : "Apenas ida/volta";
+            ViewData["RoundTripValue"] = roundTripValue;
+            return View(viewModel);
         }
 
         // GET: Rides/Create
         public async Task<IActionResult> Create()
         {
-            RideFormViewModel viewModel = new RideFormViewModel();
+            DateTime date = await _context.Ride.MaxAsync(r => r.Date);
+            RideFormViewModel viewModel = new RideFormViewModel(date.AddDays(1.0));
             viewModel = await _rideService.StartRideViewModel(viewModel);
             return View(viewModel);
         }
@@ -92,7 +95,6 @@ namespace CaronasMVCWebApp.Controllers
             if (ModelState.IsValid)
             {
                 var Passengers = viewModel.Passengers.Where(x => x.IsChecked).Select(x => x.ID).ToList();
-
                 //Validate if any passenger was selected
                 if (Passengers.Count > 0)
                 {
@@ -136,21 +138,7 @@ namespace CaronasMVCWebApp.Controllers
             {
                 Ride = await _context.Ride.Where(r => r.Id == id).FirstOrDefaultAsync()
             };
-            var passengers = await _rideService.FindPassengersByRideId(id);
-            var allMembers = await _memberService.FindAllAsync();
-            var allDestinies = await _destinyService.FindAllAsync();
-            viewModel.Destinies = allDestinies;
-            var checkBoxListItems = new List<CheckBoxListItem>();
-            foreach (var member in allMembers)
-            {
-                checkBoxListItems.Add(new CheckBoxListItem()
-                {
-                    ID = member.Id,
-                    Display = member.Name,
-                    IsChecked = passengers.Where(x => x.PassengerId == member.Id).Any()
-                });
-            }
-            viewModel.Passengers = checkBoxListItems;
+            viewModel = await _rideService.StartRideViewModel(viewModel);
 
             return View(viewModel);
         }
@@ -172,7 +160,24 @@ namespace CaronasMVCWebApp.Controllers
                 try
                 {
                     var Passengers = viewModel.Passengers.Where(x => x.IsChecked).Select(x => x.ID).ToList();
-                    await _rideService.UpdateAsync(viewModel.Ride.Id, viewModel.Ride.Date, viewModel.Ride.DestinyId, viewModel.Ride.DriverId, Passengers);
+                    //Validate if any passenger was selected
+                    if (Passengers.Count > 0)
+                    {
+                        //Validate if the Driver is also a Passenger
+                        if (!Passengers.Contains(viewModel.Ride.DriverId))
+                        {
+                            await _rideService.UpdateAsync(viewModel.Ride, Passengers);
+                            return RedirectToAction(nameof(Index));
+                        }
+                        else
+                        {
+                            ViewData["Alerta_Checkbox"] = "O motorista não pode ser um dos passageiros";
+                        }
+                    }
+                    else
+                    {
+                        ViewData["Alerta_Checkbox"] = "Selecione pelo menos 1 passageiros";
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -185,23 +190,8 @@ namespace CaronasMVCWebApp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
-            var passengers = await _rideService.FindPassengersByRideId(id);
-            var allMembers = await _memberService.FindAllAsync();
-            var allDestinies = await _destinyService.FindAllAsync();
-            viewModel.Destinies = allDestinies;
-            var checkBoxListItems = new List<CheckBoxListItem>();
-            foreach (var member in allMembers)
-            {
-                checkBoxListItems.Add(new CheckBoxListItem()
-                {
-                    ID = member.Id,
-                    Display = member.Name,
-                    IsChecked = passengers.Where(x => x.PassengerId == member.Id).Any()
-                });
-            }
-            viewModel.Passengers = checkBoxListItems;
+            viewModel = await _rideService.StartRideViewModel(viewModel);
             return View(viewModel);
         }
 

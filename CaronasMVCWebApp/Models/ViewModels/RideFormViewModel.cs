@@ -18,7 +18,17 @@ namespace CaronasMVCWebApp.Models.ViewModels
             Passengers = new List<CheckBoxListItem>();
             Ride = new Ride() { RoundTrip = RoundTrip.RoundTrip,
                                 Date = DateTime.Now};
-            
+
+        }
+        public RideFormViewModel(DateTime date)
+        {
+            Passengers = new List<CheckBoxListItem>();
+            Ride = new Ride()
+            {
+                RoundTrip = RoundTrip.RoundTrip,
+                Date = date
+            };
+
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿@using CaronasMVCWebApp.Models.Enums
-@using CaronasMVCWebApp.Models
 @model CaronasMVCWebApp.Models.ViewModels.RideFormViewModel
 
 @{
@@ -38,8 +37,8 @@
             <div>
                 @Html.EditorFor(x => x.Passengers)
             </div>
-            <span class="text-danger">@ViewData["Alerta_Checkbox"]</span>
-
+            <span class="text-danger"><strong>@ViewData["Alerta_Checkbox"]</strong></span>
+            <br />
             <br />
             <div class="form-group">
                 <button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Salvar">

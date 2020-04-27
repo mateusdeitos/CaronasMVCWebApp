@@ -37,7 +37,7 @@ namespace CaronasMVCWebApp.Services
         public async Task InsertAsync(Ride obj, List<int> passengers)
         {
 
-            int nextId = await FindNextIdAsync();
+            int nextId = obj.Id == 0  ? await FindNextIdAsync() : obj.Id;
             foreach (var passengerID in passengers)
             {
                 var ride = new Ride
@@ -55,21 +55,16 @@ namespace CaronasMVCWebApp.Services
             }
         }
 
-        public async Task UpdateAsync(int id, DateTime date, int destinyId, int driverId, List<int> passengers)
+        public async Task UpdateAsync(Ride ride, List<int> passengers)
         {
-            var rides = await _context.Ride.Where(x => x.Id == id).ToListAsync();
-            foreach (var ride in rides)
+            var rides = await _context.Ride.Where(x => x.Id == ride.Id).ToListAsync();
+            foreach (var r in rides)
             {
-                _context.Ride.Remove(ride);
-                await _context.SaveChangesAsync();
+                _context.Ride.Remove(r);
+                //await _context.SaveChangesAsync();
             }
 
-            Ride newRide = new Ride();
-            newRide.Date = date;
-            newRide.DestinyId = destinyId;
-            newRide.DriverId = driverId;
-
-            await InsertAsync(newRide, passengers);
+            await InsertAsync(ride, passengers);
             await _context.SaveChangesAsync();
 
 
@@ -85,6 +80,7 @@ namespace CaronasMVCWebApp.Services
             return await _context.Ride.Where(r => r.Id == id).ToListAsync();
         }
 
+
         internal List<RoundTrip> FindAllRoundTripValues()
         {
             return  Enum.GetValues(typeof(RoundTrip)).Cast<RoundTrip>().ToList();
@@ -95,17 +91,16 @@ namespace CaronasMVCWebApp.Services
 
             var allMembers = await _memberService.FindAllAsync();
             var allDestinies = await _destinyService.FindAllAsync();
-            //var allRoundTrip = FindAllRoundTripValues();
             viewModel.Destinies = allDestinies;
-            //viewModel.RoundTrips = allRoundTrip;
             var checkBoxListItems = new List<CheckBoxListItem>();
+            var passengers = await FindPassengersByRideId(viewModel.Ride.Id);
             foreach (var member in allMembers)
             {
                 checkBoxListItems.Add(new CheckBoxListItem()
                 {
                     ID = member.Id,
                     Display = member.Name,
-                    IsChecked = false
+                    IsChecked = passengers.Where(x => x.PassengerId == member.Id).Any()
                 });
             }
             viewModel.Passengers = checkBoxListItems;
