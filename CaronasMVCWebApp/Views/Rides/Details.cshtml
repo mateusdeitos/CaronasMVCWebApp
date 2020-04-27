@@ -53,9 +53,10 @@
                 </tbody>
             </table>
             <div class="form-group">
+                <a asp-action="Index" data-toggle="tooltip" data-placement="bottom" title="Voltar" class="btn btn-default glyphicon glyphicon-arrow-left"></a>
                 <a asp-action="Edit" asp-route-id="@Model.Ride.Id" data-toggle="tooltip" data-placement="bottom" title="Alterar" class="btn btn-default glyphicon glyphicon-pencil"></a>
                 <a asp-action="Delete" asp-route-id="@Model.Ride.Id" data-toggle="tooltip" data-placement="bottom" title="Deletar" class="btn btn-danger glyphicon glyphicon-trash"></a>
-                <a asp-action="Index" data-toggle="tooltip" data-placement="bottom" title="Voltar" class="btn btn-default glyphicon glyphicon-arrow-left"></a>
+                
             </div>
         </form>
     </div>

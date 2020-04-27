@@ -24,10 +24,10 @@
                 <input asp-for="CostPerPassenger" class="form-control" disabled />
                 <span asp-validation-for="CostPerPassenger" class="text-danger"></span>
             </div>
+            <a asp-action="Index" data-toggle="tooltip" data-placement="bottom" title="Voltar" class="btn btn-default glyphicon glyphicon-arrow-left"></a>
             <button type="submit" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Deletar">
                 <span class="glyphicon glyphicon-trash"></span>
             </button>
-            <a asp-action="Index" data-toggle="tooltip" data-placement="bottom" title="Voltar" class="btn btn-default glyphicon glyphicon-arrow-left"></a>
         </form>
     </div>
 </div>

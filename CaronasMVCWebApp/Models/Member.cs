@@ -26,7 +26,7 @@ namespace CaronasMVCWebApp.Models
         public string Email { get; set; }
 
         [Required(ErrorMessage = "O {0} é obrigatório.")]
-        [EmailAddress(ErrorMessage = "Informe um telefone válido")]
+        [Phone(ErrorMessage = "Informe um telefone válido")]
         [DataType(DataType.PhoneNumber)]
         [Display(Name = "Telefone")]
         public string Phone { get; set; }

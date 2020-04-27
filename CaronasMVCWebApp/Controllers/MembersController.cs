@@ -38,14 +38,18 @@ namespace CaronasMVCWebApp.Controllers
             {
                 return NotFound();
             }
-
-            return View(member);
+            ViewBag.Action = "Details";
+            ViewBag.Title = "Detalhes do participante";
+            return View("Create", member);
         }
 
         // GET: Members/Create
         public IActionResult Create()
         {
-            return View();
+            ViewBag.Action = "Create";
+            ViewBag.Title = "Novo participante";
+            Member member = new Member();
+            return View(member);
         }
 
         // POST: Members/Create
@@ -61,6 +65,8 @@ namespace CaronasMVCWebApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Action = "Create";
+            ViewBag.Title = "Novo participante";
             return View(member);
         }
 
@@ -77,7 +83,9 @@ namespace CaronasMVCWebApp.Controllers
             {
                 return NotFound();
             }
-            return View(member);
+            ViewBag.Action = "Edit";
+            ViewBag.Title = "Editar participante";
+            return View("Create", member);
         }
 
         // POST: Members/Edit/5
@@ -112,7 +120,9 @@ namespace CaronasMVCWebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(member);
+            ViewBag.Action = "Edit";
+            ViewBag.Title = "Editar participante";
+            return View("Create", member);
         }
 
         // GET: Members/Delete/5
@@ -130,7 +140,9 @@ namespace CaronasMVCWebApp.Controllers
                 return NotFound();
             }
 
-            return View(member);
+            ViewBag.Action = "Delete";
+            ViewBag.Title = "Deletar participante?";
+            return View("Create",member);
         }
 
         // POST: Members/Delete/5

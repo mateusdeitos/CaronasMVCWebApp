@@ -16,23 +16,23 @@
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" disabled/>
+                <input asp-for="Name" class="form-control" disabled />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" disabled/>
+                <input asp-for="Email" class="form-control" disabled />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" disabled/>
+                <input asp-for="Phone" class="form-control" disabled />
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
+            <a asp-action="Index" data-toggle="tooltip" data-placement="bottom" title="Voltar" class="btn btn-default glyphicon glyphicon-arrow-left"></a>
             <button type="submit" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Deletar">
                 <span class="glyphicon glyphicon-trash"></span>
             </button>
-            <a asp-action="Index" data-toggle="tooltip" data-placement="bottom" title="Voltar" class="btn btn-default glyphicon glyphicon-arrow-left"></a>
         </form>
     </div>
 </div>
