@@ -39,13 +39,18 @@ namespace CaronasMVCWebApp.Controllers
                 return NotFound();
             }
 
-            return View(destiny);
+            ViewBag.Action = "Details";
+            ViewBag.Title = "Detalhes do destino";
+            return View("Create", destiny);
         }
 
         // GET: Destinies/Create
         public IActionResult Create()
         {
-            return View();
+            ViewBag.Action = "Create";
+            ViewBag.Title = "Novo destino";
+            Destiny destiny = new Destiny();
+            return View(destiny);
         }
 
         // POST: Destinies/Create
@@ -61,6 +66,8 @@ namespace CaronasMVCWebApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Action = "Create";
+            ViewBag.Title = "Novo destino";
             return View(destiny);
         }
 
@@ -77,7 +84,9 @@ namespace CaronasMVCWebApp.Controllers
             {
                 return NotFound();
             }
-            return View(destiny);
+            ViewBag.Action = "Edit";
+            ViewBag.Title = "Editar destino";
+            return View("Create", destiny);
         }
 
         // POST: Destinies/Edit/5
@@ -112,7 +121,9 @@ namespace CaronasMVCWebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(destiny);
+            ViewBag.Action = "Edit";
+            ViewBag.Title = "Editar destino";
+            return View("Create", destiny);
         }
 
         // GET: Destinies/Delete/5
@@ -130,7 +141,9 @@ namespace CaronasMVCWebApp.Controllers
                 return NotFound();
             }
 
-            return View(destiny);
+            ViewBag.Action = "Delete";
+            ViewBag.Title = "Deletar destino";
+            return View("Create", destiny);
         }
 
         // POST: Destinies/Delete/5

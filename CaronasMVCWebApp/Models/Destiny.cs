@@ -21,6 +21,7 @@ namespace CaronasMVCWebApp.Models
 
         [Required(ErrorMessage = "O {0} é obrigatório")]
         [Display(Name = "Custo por Passageiro (ida e volta)")]
+        [Range(1, 500, ErrorMessage = "O {0} deve ser entre {1} e {2}")]
         [DataType(DataType.Currency)]
         public double CostPerPassenger { get; set; }
 

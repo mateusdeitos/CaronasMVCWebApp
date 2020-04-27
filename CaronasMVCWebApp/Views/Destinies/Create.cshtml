@@ -1,10 +1,7 @@
 ﻿@model CaronasMVCWebApp.Models.Destiny
 
-@{
-    ViewData["Title"] = "Novo Destino de Ride";
-}
 
-<h2>@ViewData["Title"]</h2>
+<h2>@ViewBag.Title</h2>
 
 <hr />
 <div class="row">
@@ -13,19 +10,56 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                @if (ViewBag.Action == "Details" || ViewBag.Action == "Delete")
+                {
+                    <input asp-for="Name" class="form-control" disabled />
+                }
+                else
+                {
+                    <input asp-for="Name" class="form-control" />
+                }
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CostPerPassenger" class="control-label"></label>
-                <input asp-for="CostPerPassenger" class="form-control" />
+                @if (ViewBag.Action == "Details" || ViewBag.Action == "Delete")
+                {
+                    <input asp-for="CostPerPassenger" class="form-control" disabled />
+                }
+                else
+                {
+                    <input asp-for="CostPerPassenger" class="form-control" />
+                }
                 <span asp-validation-for="CostPerPassenger" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <a asp-action="Index" data-toggle="tooltip" data-placement="bottom" title="Voltar" class="btn btn-default glyphicon glyphicon-arrow-left"></a>
-                <button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Salvar">
-                    <span class="glyphicon glyphicon-floppy-disk"></span>
-                </button>
+                <a asp-action="Index" data-toggle="tooltip" data-placement="bottom" title="Voltar" class="btn btn-default">
+                    <i class="glyphicon glyphicon-arrow-left">
+                    </i>
+                    <strong>  Voltar</strong>
+                </a>
+                @if (ViewBag.Action == "Delete")
+                {
+                    <button type="submit" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Salvar">
+                        <i class="glyphicon glyphicon-trash">
+                        </i>
+                        <strong>  Deletar?</strong>
+                    </button>
+                }
+                @if (ViewBag.Action == "Edit" || ViewBag.Action == "Create")
+                {
+                    <button type="submit" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Salvar">
+                        <i class="glyphicon glyphicon-floppy-disk">
+                        </i>
+                        <strong>  Salvar</strong>
+                    </button>
+                }
+                @if (ViewBag.Action == "Details")
+                {
+                    <a asp-action="Edit" data-toggle="tooltip" data-placement="bottom" title="Alterar dados" class="btn btn-default glyphicon glyphicon-pencil" asp-route-id="@Model.Id"></a>
+                    <a asp-action="Delete" data-toggle="tooltip" data-placement="bottom" title="Excluir participante" class="btn btn-danger glyphicon glyphicon-trash" asp-route-id="@Model.Id"></a>
+                }
+
             </div>
         </form>
     </div>
