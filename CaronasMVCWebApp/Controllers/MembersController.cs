@@ -63,10 +63,12 @@ namespace CaronasMVCWebApp.Controllers
             {
                 _context.Add(member);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Participante cadastrado com sucesso!";
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.Action = "Create";
             ViewBag.Title = "Novo participante";
+            TempData["ErrorMessage"] = "Ocorreu um erro ao cadastrar o participante!";
             return View(member);
         }
 
@@ -118,10 +120,12 @@ namespace CaronasMVCWebApp.Controllers
                         throw;
                     }
                 }
+                TempData["SuccessMessage"] = "Participante alterado com sucesso!";
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.Action = "Edit";
             ViewBag.Title = "Editar participante";
+            TempData["ErrorMessage"] = "Ocorreu um erro ao cadastrar o participante!";
             return View("Create", member);
         }
 
@@ -153,6 +157,7 @@ namespace CaronasMVCWebApp.Controllers
             var member = await _context.Member.FindAsync(id);
             _context.Member.Remove(member);
             await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Participante excluído com sucesso!";
             return RedirectToAction(nameof(Index));
         }
 

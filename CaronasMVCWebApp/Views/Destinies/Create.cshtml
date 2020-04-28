@@ -1,8 +1,14 @@
 ﻿@model CaronasMVCWebApp.Models.Destiny
 
-
 <h2>@ViewBag.Title</h2>
 
+@if (TempData["ErrorMessage"] != null)
+{
+
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
 <hr />
 <div class="row">
     <div class="col-md-4">

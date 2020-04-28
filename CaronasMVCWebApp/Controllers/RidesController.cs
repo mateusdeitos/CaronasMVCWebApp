@@ -73,15 +73,19 @@ namespace CaronasMVCWebApp.Controllers
             //int nextId = obj.Id == 0 ? await FindNextIdAsync() : obj.Id;
             var roundTripValue = viewModel.Ride.RoundTrip.Equals(RoundTrip.RoundTrip) ? "Ida e volta" : "Apenas ida/volta";
             ViewData["RoundTripValue"] = roundTripValue;
-            return View(viewModel);
+            ViewBag.Title = "Detalhes da carona";
+            ViewBag.Action = "Details";
+            return View("Create", viewModel);
         }
 
         // GET: Rides/Create
         public async Task<IActionResult> Create()
         {
-            DateTime date = await _context.Ride.MaxAsync(r => r.Date);
+            DateTime date = await _context.Ride.AnyAsync() ? await _context.Ride.MaxAsync(r => r.Date) : DateTime.Now;
             RideFormViewModel viewModel = new RideFormViewModel(date.AddDays(1.0));
             viewModel = await _rideService.StartRideViewModel(viewModel);
+            ViewBag.Title = "Nova carona";
+            ViewBag.Action = "Create";
             return View(viewModel);
         }
 
@@ -102,19 +106,22 @@ namespace CaronasMVCWebApp.Controllers
                     if (!Passengers.Contains(viewModel.Ride.DriverId))
                     {
                         await _rideService.InsertAsync(viewModel.Ride, Passengers);
+                        TempData["SuccessMessage"] = "Carona cadastrada com sucesso!";
                         return RedirectToAction(nameof(Index));
                     }
                     else
                     {
-                        ViewData["Alerta_Checkbox"] = "O motorista não pode ser um dos passageiros";
+                        TempData["ErrorMessage"] = "O motorista não pode ser um dos passageiros";
                     }
                 }
                 else
                 {
-                    ViewData["Alerta_Checkbox"] = "Selecione pelo menos 1 passageiros";
+                    TempData["ErrorMessage"] = "Selecione pelo menos 1 passageiros";
                 }
             }
             viewModel = await _rideService.StartRideViewModel(viewModel);
+            ViewBag.Title = "Nova carona";
+            ViewBag.Action = "Create";
             return View(viewModel);
         }
 
@@ -140,7 +147,9 @@ namespace CaronasMVCWebApp.Controllers
             };
             viewModel = await _rideService.StartRideViewModel(viewModel);
 
-            return View(viewModel);
+            ViewBag.Title = "Editar carona";
+            ViewBag.Action = "Edit";
+            return View("Create", viewModel);
         }
 
         // POST: Rides/Edit/5
@@ -167,16 +176,17 @@ namespace CaronasMVCWebApp.Controllers
                         if (!Passengers.Contains(viewModel.Ride.DriverId))
                         {
                             await _rideService.UpdateAsync(viewModel.Ride, Passengers);
+                            TempData["SuccessMessage"] = "Carona alterada com sucesso!";
                             return RedirectToAction(nameof(Index));
                         }
                         else
                         {
-                            ViewData["Alerta_Checkbox"] = "O motorista não pode ser um dos passageiros";
+                            TempData["ErrorMessage"] = "O motorista não pode ser um dos passageiros";
                         }
                     }
                     else
                     {
-                        ViewData["Alerta_Checkbox"] = "Selecione pelo menos 1 passageiros";
+                        TempData["ErrorMessage"] = "Selecione pelo menos 1 passageiros";
                     }
                 }
                 catch (DbUpdateConcurrencyException)
@@ -192,7 +202,9 @@ namespace CaronasMVCWebApp.Controllers
                 }
             }
             viewModel = await _rideService.StartRideViewModel(viewModel);
-            return View(viewModel);
+            ViewBag.Title = "Editar carona";
+            ViewBag.Action = "Edit";
+            return View("Create", viewModel);
         }
 
         // GET: Rides/Delete/5
@@ -209,7 +221,14 @@ namespace CaronasMVCWebApp.Controllers
                 return NotFound();
             }
 
-            return View(ride);
+            RideFormViewModel viewModel = new RideFormViewModel()
+            {
+                Ride = ride
+            };
+            viewModel = await _rideService.StartRideViewModel(viewModel);
+            ViewBag.Title = "Editar carona";
+            ViewBag.Action = "Delete";
+            return View("Create", viewModel);
         }
 
         // POST: Rides/Delete/5
@@ -224,6 +243,7 @@ namespace CaronasMVCWebApp.Controllers
                 _context.Ride.Remove(ride);
                 await _context.SaveChangesAsync();
             }
+            TempData["SuccessMessage"] = "Carona excluída com sucesso!";
             return RedirectToAction(nameof(Index));
         }
 

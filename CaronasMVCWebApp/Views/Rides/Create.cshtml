@@ -1,51 +1,132 @@
 ﻿@using CaronasMVCWebApp.Models.Enums
+@using CaronasMVCWebApp.Models.ViewModels
 @model CaronasMVCWebApp.Models.ViewModels.RideFormViewModel
 
-@{
-    ViewData["Title"] = "Nova Viagem";
+
+<h2>@ViewBag.Title</h2>
+
+@if (TempData["ErrorMessage"] != null)
+{
+
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
 }
-
-<h2>@ViewData["Title"]</h2>
-
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="@ViewBag.Action">
+            <input type="hidden" asp-for="Ride.Id" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label for="DefaultDate" asp-for="Ride.Date" class="control-label"></label>
-                <input asp-for="Ride.Date" class="form-control" />
+                @if (ViewBag.Action == "Details" || ViewBag.Action == "Delete")
+                {
+                    <input asp-for="Ride.Date" class="form-control" disabled />
+                }
+                else
+                {
+                    <input asp-for="Ride.Date" class="form-control" />
+                }
                 <span asp-validation-for="Ride.Date" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Ride.DestinyId" class="control-label"></label>
-                <select asp-for="Ride.DestinyId" asp-items="@(new SelectList(Model.Destinies, "Id",
+                @if (ViewBag.Action == "Details" || ViewBag.Action == "Delete")
+                {
+                    <select asp-for="Ride.DestinyId" asp-items="@(new SelectList(Model.Destinies, "Id",
+                    "Name"))" class="form-control" disabled></select>
+                }
+                else
+                {
+                    <select asp-for="Ride.DestinyId" asp-items="@(new SelectList(Model.Destinies, "Id",
                     "Name"))" class="form-control"></select>
+                }
             </div>
             <div class="form-group">
                 <label asp-for="Ride.DriverId" class="control-label"></label>
-                <select asp-for="Ride.DriverId" asp-items="@(new SelectList(Model.Passengers, "ID",
+                @if (ViewBag.Action == "Details" || ViewBag.Action == "Delete")
+                {
+                    <select asp-for="Ride.DriverId" asp-items="@(new SelectList(Model.Passengers, "ID",
+                    "Display"))" class="form-control" disabled></select>
+                }
+                else
+                {
+                    <select asp-for="Ride.DriverId" asp-items="@(new SelectList(Model.Passengers, "ID",
                     "Display"))" class="form-control"></select>
+                }
             </div>
             <div class="form-group">
-                @Html.RadioButtonFor(r => r.Ride.RoundTrip, RoundTrip.RoundTrip, new { id = RoundTrip.RoundTrip })
-                <label for=@RoundTrip.RoundTrip>Ida e volta</label>
+                @if (ViewBag.Action == "Details" || ViewBag.Action == "Delete")
+                {
+                    <label asp-for="Ride.RoundTrip" class="control-label"></label><br />
+                    <input asp-for="@ViewData["RoundTripValue"]" class="form-control" disabled />
+                }
+                else
+                {
+                    @Html.RadioButtonFor(r => r.Ride.RoundTrip, RoundTrip.RoundTrip, new { id = RoundTrip.RoundTrip })
+                    <label for=@RoundTrip.RoundTrip>Ida e volta</label>
+                    <br />
+                    @Html.RadioButtonFor(r => r.Ride.RoundTrip, RoundTrip.HalfTrip, new { id = RoundTrip.HalfTrip })
+                    <label for=@RoundTrip.HalfTrip>Apenas ida/volta</label>
+                }
+            </div>
+            @if (ViewBag.Action == "Details" || ViewBag.Action == "Delete")
+            {
+                <label asp-for="Ride.PassengerId" class="control-label"></label><br />
+                <table class="table table-responsive table-striped">
+                    <tbody>
+                        @foreach (CheckBoxListItem p in Model.Passengers)
+                        {
+                            @if (p.IsChecked)
+                            {
+                                <tr>
+                                    <td>
+                                        @p.Display
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div>
+                    @Html.EditorFor(x => x.Passengers)
+                </div>
+                <span class="text-danger"><strong>@ViewData["Alerta_Checkbox"]</strong></span>
                 <br />
-                @Html.RadioButtonFor(r => r.Ride.RoundTrip, RoundTrip.HalfTrip, new { id = RoundTrip.HalfTrip })
-                <label for=@RoundTrip.HalfTrip>Apenas ida/volta</label>
-            </div>
-            <div>
-                @Html.EditorFor(x => x.Passengers)
-            </div>
-            <span class="text-danger"><strong>@ViewData["Alerta_Checkbox"]</strong></span>
-            <br />
-            <br />
+                <br />
+            }
             <div class="form-group">
-                <a asp-action="Index" data-toggle="tooltip" data-placement="bottom" title="Voltar" class="btn btn-default glyphicon glyphicon-arrow-left"></a>
-                <button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Salvar">
-                    <span class="glyphicon glyphicon-floppy-disk"></span>
-                </button>
-                
+                <a asp-action="Index" data-toggle="tooltip" data-placement="bottom" title="Voltar" class="btn btn-default">
+                    <i class="glyphicon glyphicon-arrow-left">
+                    </i>
+                    <strong>  Voltar</strong>
+                </a>
+                @if (ViewBag.Action == "Delete")
+                {
+                    <button type="submit" asp-action="Delete" asp-route-id="@Model.Ride.Id" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Salvar">
+                        <i class="glyphicon glyphicon-trash">
+                        </i>
+                        <strong>  Deletar?</strong>
+                    </button>
+                }
+                @if (ViewBag.Action == "Edit" || ViewBag.Action == "Create")
+                {
+                    <button type="submit" asp-action="@ViewBag.Action" asp-route-id="@Model.Ride.Id" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Salvar">
+                        <i class="glyphicon glyphicon-floppy-disk">
+                        </i>
+                        <strong>  Salvar</strong>
+                    </button>
+                }
+                @if (ViewBag.Action == "Details")
+                {
+                    <a asp-action="Edit" data-toggle="tooltip" data-placement="bottom" title="Alterar dados" class="btn btn-default glyphicon glyphicon-pencil" asp-route-id="@Model.Ride.Id"></a>
+                    <a asp-action="Delete" data-toggle="tooltip" data-placement="bottom" title="Excluir participante" class="btn btn-danger glyphicon glyphicon-trash" asp-route-id="@Model.Ride.Id"></a>
+                }
+
             </div>
         </form>
     </div>

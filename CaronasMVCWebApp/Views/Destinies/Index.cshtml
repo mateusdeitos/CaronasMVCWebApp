@@ -4,6 +4,20 @@
     ViewData["Title"] = "Destinos";
 }
 
+@if (TempData["SuccessMessage"] != null)
+{
+
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
 <h2>@ViewData["Title"]</h2>
 
 <p>
@@ -26,20 +40,21 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CostPerPassenger)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info glyphicon glyphicon-search"></a>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-default glyphicon glyphicon-pencil"></a>
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger glyphicon glyphicon-trash"></a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CostPerPassenger)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info glyphicon glyphicon-search"></a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-default glyphicon glyphicon-pencil"></a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger glyphicon glyphicon-trash"></a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
