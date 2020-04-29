@@ -32,7 +32,7 @@ namespace CaronasMVCWebApp.Controllers
         // GET: Rides
         public async Task<IActionResult> Index()
         {
-            var caronas_app_dbContext = await _context.Ride.Include(r => r.Destiny).Include(r => r.Driver).OrderByDescending(r=>r.Date).ToListAsync();
+            var caronas_app_dbContext = await _context.Ride.Include(r => r.Destiny).Include(r => r.Driver).OrderByDescending(r => r.Date).ToListAsync();
             var results = caronas_app_dbContext.Select(r => r.Id).Distinct().ToList();
 
             List<Ride> rides = new List<Ride>();
@@ -44,7 +44,7 @@ namespace CaronasMVCWebApp.Controllers
                 var passengers = await _rideService.FindPassengersByRideId(ride.Id);
                 ride.PassengerId = passengers.Count();
                 rides.Add(ride);
-                
+
             }
             return View(rides);
         }
@@ -99,25 +99,9 @@ namespace CaronasMVCWebApp.Controllers
             if (ModelState.IsValid)
             {
                 var Passengers = viewModel.Passengers.Where(x => x.IsChecked).Select(x => x.ID).ToList();
-                //Validate if any passenger was selected
-                if (Passengers.Count > 0)
-                {
-                    //Validate if the Driver is also a Passenger
-                    if (!Passengers.Contains(viewModel.Ride.DriverId))
-                    {
-                        await _rideService.InsertAsync(viewModel.Ride, Passengers);
-                        TempData["SuccessMessage"] = "Carona cadastrada com sucesso!";
-                        return RedirectToAction(nameof(Index));
-                    }
-                    else
-                    {
-                        TempData["ErrorMessage"] = "O motorista não pode ser um dos passageiros";
-                    }
-                }
-                else
-                {
-                    TempData["ErrorMessage"] = "Selecione pelo menos 1 passageiros";
-                }
+                await _rideService.InsertAsync(viewModel.Ride, Passengers);
+                TempData["SuccessMessage"] = "Carona cadastrada com sucesso!";
+                return RedirectToAction(nameof(Index));
             }
             viewModel = await _rideService.StartRideViewModel(viewModel);
             ViewBag.Title = "Nova carona";
@@ -169,25 +153,10 @@ namespace CaronasMVCWebApp.Controllers
                 try
                 {
                     var Passengers = viewModel.Passengers.Where(x => x.IsChecked).Select(x => x.ID).ToList();
-                    //Validate if any passenger was selected
-                    if (Passengers.Count > 0)
-                    {
-                        //Validate if the Driver is also a Passenger
-                        if (!Passengers.Contains(viewModel.Ride.DriverId))
-                        {
-                            await _rideService.UpdateAsync(viewModel.Ride, Passengers);
-                            TempData["SuccessMessage"] = "Carona alterada com sucesso!";
-                            return RedirectToAction(nameof(Index));
-                        }
-                        else
-                        {
-                            TempData["ErrorMessage"] = "O motorista não pode ser um dos passageiros";
-                        }
-                    }
-                    else
-                    {
-                        TempData["ErrorMessage"] = "Selecione pelo menos 1 passageiros";
-                    }
+                    await _rideService.UpdateAsync(viewModel.Ride, Passengers);
+                    TempData["SuccessMessage"] = "Carona alterada com sucesso!";
+                    return RedirectToAction(nameof(Index));
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
