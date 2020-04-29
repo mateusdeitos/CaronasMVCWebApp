@@ -17,16 +17,27 @@
             <div class="@badge"><i class="@icon"></i></div>
             <div class="timeline-panel">
                 <div class="timeline-heading">
-                    <h4 class="timeline-title"> <i class="glyphicon glyphicon-calendar"></i> @item.Ride.Date</h4>
+                    <h4 class="timeline-title"> <i class="glyphicon glyphicon-calendar"></i> @item.Ride.Date.ToShortDateString() - @item.Ride.Date.DayOfWeek</h4>
                     <p><small class="text-muted"><i class="glyphicon glyphicon-info-sign"></i> @item.Destiny.Name</small></p>
                 </div>
                 <div class="timeline-body">
                     <p><i class="glyphicon glyphicon-road"></i><b> Motorista: </b> @item.Driver.Name</p>
-                    <p>Passageiros:</p>
+                    <br />
+                    <p><b>Passageiros:</b></p>
                     @foreach (var passenger in item.Passengers)
                     {
                         <p><i class="glyphicon glyphicon-user"></i> @passenger.Name</p>
                     }
+                </div>
+                <div class="btn-group pull-right">
+                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                        <i class="glyphicon glyphicon-cog"></i> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a asp-action="Edit" asp-route-id="@item.Ride.Id"><i class="glyphicon glyphicon-pencil"></i> Editar</a></li>
+                        <li><a asp-action="Delete" asp-route-id="@item.Ride.Id"><i class="glyphicon glyphicon-trash"></i> Deletar</a></li>
+                        <li><a asp-action="Details" asp-route-id="@item.Ride.Id"><i class="glyphicon glyphicon-search"></i> Detalhes</a></li>
+                    </ul>
                 </div>
             </div>
 

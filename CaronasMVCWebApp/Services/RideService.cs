@@ -48,7 +48,7 @@ namespace CaronasMVCWebApp.Services
                     DriverId = obj.DriverId,
                     PassengerId = passengerID,
                     PaymentStatus = PaymentStatus.NotPaid,
-                    RoundTrip = RoundTrip.RoundTrip
+                    RoundTrip = obj.RoundTrip
                 };
                 _context.Add(ride);
                 await _context.SaveChangesAsync();
