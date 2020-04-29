@@ -7,6 +7,8 @@
 
     <environment exclude="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/timeline.css" />
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
     <environment include="Development">
@@ -14,7 +16,8 @@
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/timeline.css" />
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     </environment>
 </head>
 <body>
@@ -33,7 +36,7 @@
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Members" asp-action="Index">Participantes</a></li>
                     <li><a asp-area="" asp-controller="Destinies" asp-action="Index">Destinos</a></li>
-                    <li><a asp-area="" asp-controller="Rides" asp-action="Index">Viagens</a></li>
+                    <li><a asp-area="" asp-controller="Rides" asp-action="Timeline">Viagens</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">Sobre</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contato</a></li>
                 </ul>

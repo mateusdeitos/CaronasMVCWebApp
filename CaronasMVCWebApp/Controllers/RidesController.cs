@@ -49,6 +49,39 @@ namespace CaronasMVCWebApp.Controllers
             return View(rides);
         }
 
+        // GET: Rides
+        public async Task<IActionResult> Timeline()
+        {
+            //TODO: Criar TimelineViewModel
+            //      - Ride
+            //      - Driver
+            //      - Destiny
+            //      - List<Passenger> Passengers
+            List<TimelineViewModel> viewModel = new List<TimelineViewModel>();
+
+            var rides = await _rideService.FindAllAsync();
+            var ridesIds = rides.OrderByDescending(r=>r.Date).Select(r => r.Id).Distinct().ToList();
+
+            foreach (int id in ridesIds)
+            {
+                TimelineViewModel timelineViewModel = new TimelineViewModel();
+                var ride = await _rideService.FindByIdAsync(id);
+                timelineViewModel.Ride = ride.FirstOrDefault();
+                timelineViewModel.Driver = await _memberService.FindByIdAsync(ride.FirstOrDefault().DriverId);
+                timelineViewModel.Destiny = await _destinyService.FindByIdAsync(ride.FirstOrDefault().DestinyId);
+
+                foreach (var p in ride)
+                {
+                    Member passageiro = new Member();
+                    passageiro = await _memberService.FindByIdAsync(p.PassengerId);
+                    timelineViewModel.Passengers.Add(passageiro);
+                }
+
+                viewModel.Add(timelineViewModel);
+            }
+            return View(viewModel);
+        }
+
         // GET: Rides/Details/5
         public async Task<IActionResult> Details(int? id)
         {

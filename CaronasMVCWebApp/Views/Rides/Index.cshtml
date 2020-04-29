@@ -52,83 +52,40 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Driver.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Destiny.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PassengerId)
-            </td>
-            <td>
-                @{
-                    string label = "";
-                }
-                @if (item.PaymentStatus == PaymentStatus.NotPaid)
-                {
-                    label = "label label-danger";
-                }
-                @if (item.PaymentStatus == PaymentStatus.Paid)
-                {
-                    label = "label label-success";
-                }
-                <span class="@label">@Html.DisplayFor(modelItem => item.PaymentStatus)</span>
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info glyphicon glyphicon-search" data-toggle="tooltip" data-placement="bottom" title="Detalhes"></a>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-default glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="bottom" title="Alterar"></a>
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="bottom" title="Deletar"></a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Driver.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Destiny.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PassengerId)
+                </td>
+                <td>
+                    @{
+                        string label = "";
+                    }
+                    @if (item.PaymentStatus == PaymentStatus.NotPaid)
+                    {
+                        label = "label label-danger";
+                    }
+                    @if (item.PaymentStatus == PaymentStatus.Paid)
+                    {
+                        label = "label label-success";
+                    }
+                    <span class="@label">@Html.DisplayFor(modelItem => item.PaymentStatus)</span>
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info glyphicon glyphicon-search" data-toggle="tooltip" data-placement="bottom" title="Detalhes"></a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-default glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="bottom" title="Alterar"></a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="bottom" title="Deletar"></a>
+                </td>
+            </tr>
         }
 
     </tbody>
 </table>
-
-
-@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
-
-    </script>
-    <script src="bootstrap/js/bootstrap.min.js"></script>
-
-    <script type="text/javascript">
-
-        $(document).ready(function () {
-            $("#btnDetails").click(function () {
-                $("#detailsModal").modal('show');
-            });
-
-            $("#btnHideModal").click(function () {
-                $("#detailsModal").modal('hide');
-            });
-        });
-    </script>
-
-    <div class="modal fade" tabindex="-1" id="detailsModal"
-         data-keyboard="false" data-backdrop="static">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">
-                        ×
-                    </button>
-                    <h4 class="modal-title">Detalhes</h4>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div>Olá</div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="btnHideModal" class="btn btn-primary button button4">
-                        Hide
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>*@
