@@ -12,6 +12,7 @@ namespace CaronasMVCWebApp.Models
         [Required(ErrorMessage = "A {0} é obrigatória")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        [Display(Name = "Data")]
         public DateTime Date { get; set; }
 
 

@@ -1,8 +1,9 @@
-﻿@using CaronasMVCWebApp.Models.Enums
+﻿@using System.Globalization
+@using CaronasMVCWebApp.Models.Enums
 @model List<CaronasMVCWebApp.Models.Ride>
 
 @{
-    ViewData["Title"] = "Viagens cadastradas";
+    ViewData["Title"] = "Caronas cadastradas";
 }
 
 @if (TempData["SuccessMessage"] != null)
@@ -29,63 +30,38 @@
         <strong>  Novo</strong>
     </a>
 </p>
-<table class="table table-responsive table-striped">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(Model => Model[0].Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(Model => Model[0].DriverId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(Model => Model[0].DestinyId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(Model => Model[0].PassengerId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(Model => Model[0].PaymentStatus)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Driver.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Destiny.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PassengerId)
-                </td>
-                <td>
-                    @{
-                        string label = "";
-                    }
-                    @if (item.PaymentStatus == PaymentStatus.NotPaid)
-                    {
-                        label = "label label-danger";
-                    }
-                    @if (item.PaymentStatus == PaymentStatus.Paid)
-                    {
-                        label = "label label-success";
-                    }
-                    <span class="@label">@Html.DisplayFor(modelItem => item.PaymentStatus)</span>
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info glyphicon glyphicon-search" data-toggle="tooltip" data-placement="bottom" title="Detalhes"></a>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-default glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="bottom" title="Alterar"></a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="bottom" title="Deletar"></a>
-                </td>
-            </tr>
-        }
+@{ 
+    var culture = new System.Globalization.CultureInfo("pt-BR");
+    TextInfo diaDaSemana = new CultureInfo("pt-BR", false).TextInfo;
+} 
+@foreach (var item in Model)
+{
 
-    </tbody>
-</table>
+    <div class="panel-group">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" href="#@item.Id">@item.Date.ToShortDateString() - @diaDaSemana.ToTitleCase(culture.DateTimeFormat.GetDayName(item.Date.DayOfWeek))</a>
+                </h4>
+            </div>
+            <div id="@item.Id" class="panel-collapse collapse">
+                <ul class="list-group">
+                    <li class="list-group-item"><b>@Html.DisplayNameFor(Model => Model[0].DestinyId): </b>@Html.DisplayFor(modelItem => item.Destiny.Name)</li>
+                    <li class="list-group-item"><b>@Html.DisplayNameFor(Model => Model[0].DriverId): </b>@Html.DisplayFor(modelItem => item.Driver.Name)</li>
+                    <li class="list-group-item"><b>@Html.DisplayNameFor(Model => Model[0].PassengerId): </b>@Html.DisplayFor(modelItem => item.PassengerId)</li>
+                    <li class="list-group-item"><b>@Html.DisplayNameFor(Model => Model[0].PaymentStatus): </b>@Html.DisplayFor(modelItem => item.PaymentStatus)</li>
+                </ul>
+                <div class="panel-footer">
+
+                    <div class="btn-group btn-sm">
+
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info  glyphicon glyphicon-search" data-toggle="tooltip" data-placement="bottom" title="Detalhes"></a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-default glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="bottom" title="Alterar"></a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger  glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="bottom" title="Deletar"></a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

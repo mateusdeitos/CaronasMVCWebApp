@@ -21,22 +21,31 @@
     </environment>
 </head>
 <body>
-    <nav class="navbar navbar-fixed-top">
-        <div class="container">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    @*<span class="sr-only">Toggle navigation</span>*@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Home</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Início</a>
             </div>
-            <div class="navbar-collapse collapse">
+            <div class="navbar-collapse collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Members" asp-action="Index">Participantes</a></li>
                     <li><a asp-area="" asp-controller="Destinies" asp-action="Index">Destinos</a></li>
-                    <li><a asp-area="" asp-controller="Rides" asp-action="Timeline">Viagens</a></li>
+                    <li class="dropdown">
+                        <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Caronas <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a asp-controller="Rides" asp-action="Index">Cadastrar</a></li>
+                            <li><a asp-controller="Rides" asp-action="Timeline"> Timeline </a></li>
+                            @*<li><a href="#">Something else here</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Separated link</a></li>*@
+                        </ul>
+                    </li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">Sobre</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contato</a></li>
                 </ul>
