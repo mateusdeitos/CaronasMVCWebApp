@@ -105,6 +105,7 @@ namespace CaronasMVCWebApp.Services
             }
             viewModel.Passengers = checkBoxListItems;
 
+
             return viewModel;
         }
     }

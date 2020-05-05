@@ -54,7 +54,7 @@
                 }
                 @if (ViewBag.Action == "Edit" || ViewBag.Action == "Create")
                 {
-                    <button type="submit" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Salvar">
+                    <button type="submit" asp-action="@ViewBag.Action" asp-route-id="@Model.Id" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Salvar">
                         <i class="glyphicon glyphicon-floppy-disk">
                         </i>
                         <strong>  Salvar</strong>

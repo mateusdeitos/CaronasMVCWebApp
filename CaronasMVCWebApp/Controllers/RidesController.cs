@@ -103,7 +103,6 @@ namespace CaronasMVCWebApp.Controllers
             };
             viewModel = await _rideService.StartRideViewModel(viewModel);
 
-            //int nextId = obj.Id == 0 ? await FindNextIdAsync() : obj.Id;
             var roundTripValue = viewModel.Ride.RoundTrip.Equals(RoundTrip.RoundTrip) ? "Ida e volta" : "Apenas ida/volta";
             ViewData["RoundTripValue"] = roundTripValue;
             ViewBag.Title = "Detalhes da carona";
@@ -228,7 +227,9 @@ namespace CaronasMVCWebApp.Controllers
                 Ride = ride
             };
             viewModel = await _rideService.StartRideViewModel(viewModel);
-            ViewBag.Title = "Editar carona";
+            var roundTripValue = viewModel.Ride.RoundTrip.Equals(RoundTrip.RoundTrip) ? "Ida e volta" : "Apenas ida/volta";
+            ViewData["RoundTripValue"] = roundTripValue;
+            ViewBag.Title = "Deletar carona";
             ViewBag.Action = "Delete";
             return View("Create", viewModel);
         }
