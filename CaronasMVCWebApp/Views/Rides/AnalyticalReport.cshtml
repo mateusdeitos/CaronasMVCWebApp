@@ -6,6 +6,11 @@
     ViewData["Title"] = "Relatório analítico";
     DateTime minDate = DateTime.Parse(ViewData["minDate"] as string);
     DateTime maxDate = DateTime.Parse(ViewData["maxDate"] as string);
+
+    var culture = new System.Globalization.CultureInfo("pt-BR");
+    TextInfo diaDaSemana = new CultureInfo("pt-BR", false).TextInfo;
+    var alertClass = ViewBag.Total > 0 ? "success" : "danger";
+  
 }
 
 @if (TempData["SuccessMessage"] != null)
@@ -44,7 +49,7 @@
                     <select class="form-control" name="memberId" value="@ViewBag.Member.Id" asp-items="@(new SelectList(ViewBag.Members, "Id",
                     "Name", @ViewBag.Member.Id))"></select>
                 </div>
-                <button type="submit" data-toggle="tooltip" data-placement="bottom" title="Aplicar filtros" class="btn btn-primary ">
+                <button type="submit" data-toggle="tooltip" data-placement="bottom" title="Aplicar filtros" class="btn btn-default ">
                     <i class="fa fa-filter">
                     </i>
                     <strong>  Filtrar</strong>
@@ -57,10 +62,11 @@
 
 
 
-@{
-    var culture = new System.Globalization.CultureInfo("pt-BR");
-    TextInfo diaDaSemana = new CultureInfo("pt-BR", false).TextInfo;
-}
+<div class="alert alert-@alertClass">
+    <h4>Seu saldo no período:</h4>
+    <h3 class="text-@alertClass"><b>R$ @ViewBag.Total.ToString("F2", CultureInfo.InvariantCulture)</b></h3>
+</div>
+
 @foreach (var item in Model)
 {
     var panelClass = item.Balance >= 0 ? "panel-success" : "panel-danger";
