@@ -44,7 +44,7 @@
                     <select class="form-control" name="memberId" value="@ViewBag.Member.Id" asp-items="@(new SelectList(ViewBag.Members, "Id",
                     "Name", @ViewBag.Member.Id))"></select>
                 </div>
-                <button type="submit" data-toggle="tooltip" data-placement="bottom" title="Aplicar filtros" class="btn btn-primary">
+                <button type="submit" data-toggle="tooltip" data-placement="bottom" title="Aplicar filtros" class="btn btn-primary ">
                     <i class="fa fa-filter">
                     </i>
                     <strong>  Filtrar</strong>
@@ -68,7 +68,7 @@
 
     <div class="panel-group">
         <div class="panel @panelClass">
-            <div class="panel-heading">
+            <div class="panel-heading" data-toggle="collapse" data-target="#@item.Ride.Id" role="button">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" href="#@item.Ride.Id">
                         @item.Ride.Date.ToShortDateString() - @diaDaSemana.ToTitleCase(culture.DateTimeFormat.GetDayName(item.Ride.Date.DayOfWeek))
