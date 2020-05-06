@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
+    <link rel="icon" href="@Url.Content("~/images/logo.png")" />
 
     <environment exclude="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -16,9 +17,9 @@
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap_journal.css" />
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/timeline.css" />
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/background.css" />
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     </environment>
 </head>
@@ -36,7 +37,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">
-                        <img alt="Brand" src="~/images/brand.png" title="Caronas App" >
+                        <img alt="Brand" src="~/images/logo.png" width="50" height="30" title="Início">
                     </a>
                 </div>
                 <div class="navbar-collapse collapse" id="myNavbar">

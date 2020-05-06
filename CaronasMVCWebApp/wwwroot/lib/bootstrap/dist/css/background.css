@@ -1,8 +1,4 @@
-﻿body {
-    margin: 0;
-}
-
-.custom-background-image {
+﻿.custom-background-image {
     background-image: url("/w3images/background.jpg");
     background-color: rgb(255, 255, 255);
     height: auto;
