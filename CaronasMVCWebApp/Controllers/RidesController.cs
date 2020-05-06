@@ -49,18 +49,42 @@ namespace CaronasMVCWebApp.Controllers
             return View(rides);
         }
 
+        public async Task<IActionResult> AnalyticalReport(DateTime? minDate, DateTime? maxDate, int memberId)
+        {
+            var lastMonth = DateTime.Now.AddMonths(-1);
+            if (!minDate.HasValue)
+            {
+                minDate = new DateTime(lastMonth.Year, lastMonth.Month, 1);
+            }
+            if (!maxDate.HasValue)
+            {
+                maxDate = minDate.Value.AddMonths(1).AddDays(-1);
+            }
+            if (memberId == 0)
+            {
+                var members = await _memberService.FindAllAsync();
+                memberId = members.Select(m => m.Id).FirstOrDefault();
+            }
+            Member member = await _memberService.FindByIdAsync(memberId);
+
+            var result = await _rideService.FindByDateAsync(minDate, maxDate);
+            var view = await _rideService.GenerateAnalyticalReportForMember(result, member);
+            ViewBag.Total = view.Select(r=>r.Balance).Sum();
+            ViewData["minDate"] = minDate.Value.ToString("yyyy-MM-dd");
+            ViewData["maxDate"] = maxDate.Value.ToString("yyyy-MM-dd");
+            ViewBag.Members = await _memberService.FindAllAsync();
+            ViewBag.Member = member;
+
+            return View(view);
+        }
+
         // GET: Rides
         public async Task<IActionResult> Timeline()
         {
-            //TODO: Criar TimelineViewModel
-            //      - Ride
-            //      - Driver
-            //      - Destiny
-            //      - List<Passenger> Passengers
             List<TimelineViewModel> viewModel = new List<TimelineViewModel>();
 
             var rides = await _rideService.FindAllAsync();
-            var ridesIds = rides.OrderByDescending(r=>r.Date).Select(r => r.Id).Distinct().ToList();
+            var ridesIds = rides.OrderByDescending(r => r.Date).Select(r => r.Id).Distinct().ToList();
 
             foreach (int id in ridesIds)
             {

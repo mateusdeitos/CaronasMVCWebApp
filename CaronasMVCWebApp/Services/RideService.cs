@@ -37,7 +37,7 @@ namespace CaronasMVCWebApp.Services
         public async Task InsertAsync(Ride obj, List<int> passengers)
         {
 
-            int nextId = obj.Id == 0  ? await FindNextIdAsync() : obj.Id;
+            int nextId = obj.Id == 0 ? await FindNextIdAsync() : obj.Id;
             foreach (var passengerID in passengers)
             {
                 var ride = new Ride
@@ -72,7 +72,80 @@ namespace CaronasMVCWebApp.Services
 
         public async Task<int> FindNextIdAsync()
         {
-            return await _context.Ride.AnyAsync() ? await _context.Ride.MaxAsync(r => r.Id + 1) : 1 ;
+            return await _context.Ride.AnyAsync() ? await _context.Ride.MaxAsync(r => r.Id + 1) : 1;
+        }
+
+        public async Task<List<Ride>> FindByDateAsync(DateTime? minDate, DateTime? maxDate)
+        {
+            var result = from obj in _context.Ride select obj;
+
+            if (minDate.HasValue)
+            {
+                result = result.Where(x => x.Date >= minDate.Value);
+            }
+
+            if (maxDate.HasValue)
+            {
+                result = result.Where(x => x.Date <= maxDate.Value);
+            }
+
+
+
+            return await result.ToListAsync();
+        }
+
+        public async Task<ICollection<AnalyticalReportViewModel>> GenerateAnalyticalReportForMember(List<Ride> result, Member member)
+        {
+            ICollection<AnalyticalReportViewModel> viewModel = new List<AnalyticalReportViewModel>();
+            List<int> uniqueRidesId = result.Select(r => r.Id).Distinct().ToList();
+
+            foreach (int rideId in uniqueRidesId)
+            {
+                ICollection<CheckBoxListItem> ridePassengers = new List<CheckBoxListItem>();
+                var ride = await FindPassengersByRideId(rideId);
+                var passengers = ride.Select(r => r.Passenger).ToList();
+                if (passengers.Contains(member) || ride.Select(r => r.DriverId).FirstOrDefault() == member.Id)
+                {
+                    var rideCost = await FindCostPerPassengerByRideIdAsync(rideId);
+                    double rideBalance = 0;
+
+                    if (passengers.Contains(member))
+                    {
+                        rideBalance = rideCost * (-1);
+                    }
+                    else
+                    {
+                        rideBalance = rideCost * passengers.Count;
+                    }
+                    foreach (var passenger in ride)
+                    {
+                        Member Passenger = await _memberService.FindByIdAsync(passenger.PassengerId);
+                        ridePassengers.Add(new CheckBoxListItem { Display = Passenger.Name,
+                        ID = Passenger.Id,
+                        IsChecked = false});
+                    }
+
+                    AnalyticalReportViewModel rideForReport = new AnalyticalReportViewModel
+                    {
+                        Ride = ride.FirstOrDefault(),
+                        Balance = rideBalance
+                    };
+                    rideForReport.Ride.PassengerId = passengers.Count;
+                    viewModel.Add(rideForReport);
+                }
+
+            }
+            return viewModel;
+        }
+
+        public async Task<double> FindCostPerPassengerByRideIdAsync(int id)
+        {
+            var ride = await FindByIdAsync(id);
+            Destiny destiny = await _destinyService.FindByIdAsync(ride.Select(r => r.DestinyId).FirstOrDefault());
+            int trip = (int)ride.Select(r => r.RoundTrip).FirstOrDefault();
+
+
+            return destiny.CostPerPassenger / trip;
         }
 
         internal async Task<List<Ride>> FindPassengersByRideId(int? id)
@@ -83,7 +156,7 @@ namespace CaronasMVCWebApp.Services
 
         internal List<RoundTrip> FindAllRoundTripValues()
         {
-            return  Enum.GetValues(typeof(RoundTrip)).Cast<RoundTrip>().ToList();
+            return Enum.GetValues(typeof(RoundTrip)).Cast<RoundTrip>().ToList();
         }
 
         public async Task<RideFormViewModel> StartRideViewModel(RideFormViewModel viewModel)
