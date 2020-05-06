@@ -6,6 +6,11 @@
     ViewData["Title"] = "Relatório analítico";
     DateTime minDate = DateTime.Parse(ViewData["minDate"] as string);
     DateTime maxDate = DateTime.Parse(ViewData["maxDate"] as string);
+
+    var culture = new System.Globalization.CultureInfo("pt-BR");
+    TextInfo diaDaSemana = new CultureInfo("pt-BR", false).TextInfo;
+    var alertClass = ViewBag.Total > 0 ? "success" : "danger";
+
 }
 
 @if (TempData["SuccessMessage"] != null)
