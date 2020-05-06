@@ -39,15 +39,13 @@
                 <span asp-validation-for="CostPerPassenger" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <a asp-action="Index" data-toggle="tooltip" data-placement="bottom" title="Voltar" class="btn btn-default">
-                    <i class="glyphicon glyphicon-arrow-left">
-                    </i>
-                    <strong>  Voltar</strong>
+                <a asp-action="Index" data-toggle="tooltip" data-placement="bottom" title="Voltar" class="btn btn-default fa fa-arrow-circle-left">
+                 
                 </a>
                 @if (ViewBag.Action == "Delete")
                 {
                     <button type="submit" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Salvar">
-                        <i class="glyphicon glyphicon-trash">
+                        <i class="fa fa-trash">
                         </i>
                         <strong>  Deletar?</strong>
                     </button>
@@ -55,15 +53,15 @@
                 @if (ViewBag.Action == "Edit" || ViewBag.Action == "Create")
                 {
                     <button type="submit" asp-action="@ViewBag.Action" asp-route-id="@Model.Id" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Salvar">
-                        <i class="glyphicon glyphicon-floppy-disk">
+                        <i class="fa fa-save">
                         </i>
                         <strong>  Salvar</strong>
                     </button>
                 }
                 @if (ViewBag.Action == "Details")
                 {
-                    <a asp-action="Edit" data-toggle="tooltip" data-placement="bottom" title="Alterar dados" class="btn btn-default glyphicon glyphicon-pencil" asp-route-id="@Model.Id"></a>
-                    <a asp-action="Delete" data-toggle="tooltip" data-placement="bottom" title="Excluir participante" class="btn btn-danger glyphicon glyphicon-trash" asp-route-id="@Model.Id"></a>
+                    <a asp-action="Edit" data-toggle="tooltip" data-placement="bottom" title="Alterar dados" class="btn btn-default fa fa-pencil-alt" asp-route-id="@Model.Id"></a>
+                    <a asp-action="Delete" data-toggle="tooltip" data-placement="bottom" title="Excluir participante" class="btn btn-danger fa fa-trash" asp-route-id="@Model.Id"></a>
                 }
 
             </div>

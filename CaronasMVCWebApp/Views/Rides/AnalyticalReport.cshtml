@@ -28,32 +28,33 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <form class="navbar-form navbar-left" role="search">
-            <div class="input-group">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <label class="input-group-text" for="minDate"><b>Data inicial</b></label>
-                    </div>
+            <div class="form-group">
+                <div class="form-group mb-3">
+                    <label class="input-group-text" for="minDate"><b>Data inicial</b></label>
                     <input type="date" class="form-control" value="@ViewData["minDate"]" name="minDate">
                 </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <label class="input-group-text" for="maxDate"><b>Data final</b></label>
-                    </div>
+                <div class="form-group mb-3">
+                    <label class="input-group-text" for="maxDate"><b>Data final</b></label>
+
                     <input type="date" class="form-control" value="@ViewData["maxDate"]" name="maxDate">
                 </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <label class="input-group-text" for="memberId"><b>Participante</b></label>
-                    </div>
+                <div class="form-group mb-3">
+                    <label class="input-group-text" for="memberId"><b>Participante</b></label>
+
                     <select class="form-control" name="memberId" value="@ViewBag.Member.Id" asp-items="@(new SelectList(ViewBag.Members, "Id",
                     "Name", @ViewBag.Member.Id))"></select>
                 </div>
-                <button type="submit" class="btn btn-primary">Filter</button>
+                <button type="submit" data-toggle="tooltip" data-placement="bottom" title="Aplicar filtros" class="btn btn-primary">
+                    <i class="fa fa-filter">
+                    </i>
+                    <strong>  Filtrar</strong>
+                </button>
             </div>
         </form>
     </div>
+
 </nav>
-<br />
+
 
 
 @{
@@ -87,9 +88,9 @@
 
                     <div class="btn-group btn-sm">
 
-                        <a asp-action="Details" asp-route-id="@item.Ride.Id" class="btn btn-info  glyphicon glyphicon-search" data-toggle="tooltip" data-placement="bottom" title="Detalhes"></a>
-                        <a asp-action="Edit" asp-route-id="@item.Ride.Id" class="btn btn-default glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="bottom" title="Alterar"></a>
-                        <a asp-action="Delete" asp-route-id="@item.Ride.Id" class="btn btn-danger  glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="bottom" title="Deletar"></a>
+                        <a asp-action="Details" asp-route-id="@item.Ride.Id" class="btn btn-info  fa fa-search" data-toggle="tooltip" data-placement="bottom" title="Detalhes"></a>
+                        <a asp-action="Edit" asp-route-id="@item.Ride.Id" class="btn btn-default fa fa-pencil-alt" data-toggle="tooltip" data-placement="bottom" title="Alterar"></a>
+                        <a asp-action="Delete" asp-route-id="@item.Ride.Id" class="btn btn-danger  fa fa-trash" data-toggle="tooltip" data-placement="bottom" title="Deletar"></a>
 
                     </div>
                 </div>

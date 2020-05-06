@@ -22,7 +22,7 @@
 
 <p>
     <a asp-action="Create" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Cadastrar Novo Destino">
-        <i class="glyphicon glyphicon-plus-sign">
+        <i class="fa fa-plus-circle">
         </i>
         <strong>  Novo</strong>
     </a>
@@ -47,9 +47,9 @@
 
                     <div class="btn-group btn-sm">
 
-                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info  glyphicon glyphicon-search" data-toggle="tooltip" data-placement="bottom" title="Detalhes"></a>
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-default glyphicon glyphicon-pencil" data-toggle="tooltip" data-placement="bottom" title="Alterar"></a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger  glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="bottom" title="Deletar"></a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info  fa fa-search" data-toggle="tooltip" data-placement="bottom" title="Detalhes"></a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-default fa fa-pencil-alt" data-toggle="tooltip" data-placement="bottom" title="Alterar"></a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger  fa fa-trash" data-toggle="tooltip" data-placement="bottom" title="Deletar"></a>
 
                     </div>
                 </div>

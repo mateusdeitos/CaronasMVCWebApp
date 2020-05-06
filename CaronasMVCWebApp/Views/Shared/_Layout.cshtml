@@ -7,20 +7,23 @@
     <link rel="icon" href="@Url.Content("~/images/logo.png")" />
 
     <environment exclude="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/timeline.css" />
-        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-        <link rel="stylesheet" href="~/css/site.css" />
-    </environment>
-    <environment include="Development">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap_journal.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap_simplex.css" />
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/timeline.css" />
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/background.css" />
         <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" />
+    </environment>
+    <environment include="Development">
+        @*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.css"
+        asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.css"
+        asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />*@
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap_simplex.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/timeline.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/background.css" />
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" />
     </environment>
 </head>
 <body>
@@ -28,7 +31,7 @@
     <partial name="_CookieConsentPartial" />
 
     <div class="container body-content custom-background-image">
-        <nav class="navbar navbar-default">
+        <nav class="navbar navbar-default" >
             <div class="container-fluid">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
