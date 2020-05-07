@@ -3,7 +3,9 @@ using CaronasMVCWebApp.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace CaronasMVCWebApp.Services
@@ -41,23 +43,57 @@ namespace CaronasMVCWebApp.Services
             //Sum all rides that the member was the Driver
             balance += rides
                        .Where(r => r.Driver.Equals(member))
-                       .Select(r => r.Destiny.CostPerPassenger)
+                       .Select(r => r.Destiny.CostPerPassenger / (int)r.RoundTrip)
                        .Sum();
 
             //Subtract all rides that the member was a Passenger
             balance -= rides
                        .Where(r => r.Passenger.Equals(member))
-                       .Select(r => r.Destiny.CostPerPassenger)
+                       .Select(r => r.Destiny.CostPerPassenger / (int)r.RoundTrip)
                        .Sum();
 
             return balance;
         }
 
-        public string GetMemberPaymentObservation(MonthlyReportViewModel reportObject)
+        public List<string> GetMemberPaymentObservation(MonthlyReportViewModel reportObject)
         {
+            List<string> observations = new List<string>();
+            var debtors = reportObject.Members
+                          .Where(m => m.Value < 0)
+                          .ToDictionary(m => m.Key, m => m.Value);
+            var creditors = reportObject.Members
+                            .Where(m => m.Value > 0)
+                            .ToDictionary(m => m.Key, m => m.Value);
+
+            foreach (Member debtor in debtors.Keys.ToList())
+            {
 
 
-            return "Quem vai pagar quem";
+                foreach (Member creditor in creditors.Keys.ToList())
+                {
+                    // Get balance of debtor
+                    double debtorBalance = Math.Abs(debtors[debtor]);
+
+                    // Get balance of creditor
+                    double creditorBalance = Math.Abs(creditors[creditor]);
+
+                    if (creditorBalance > 0 && debtorBalance > 0)
+                    {
+
+                        var amountToPay = debtorBalance >= creditorBalance ? creditorBalance : debtorBalance;
+                        observations.Add($"{debtor.Name} deve pagar {amountToPay.ToString("F2", CultureInfo.CurrentCulture)} para {creditor.Name}");
+                        debtors[debtor] += amountToPay;
+                        creditors[creditor] -= amountToPay;
+                    }
+                }
+
+
+
+
+            }
+
+
+            return observations;
         }
     }
 }

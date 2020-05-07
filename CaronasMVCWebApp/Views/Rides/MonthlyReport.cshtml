@@ -44,20 +44,53 @@
             </div>
 
             <div class="panel-body">
-                <div class="list-group">
-                    @foreach (var member in item.Members)
-                    {
-                        var alertClass = member.Value > 0 ? "success" : (member.Value == 0 ? "info" : "danger");
-
-                        <div class="alert alert-@alertClass" style="margin-bottom:0">
-                            <h5>@member.Key.Name</h5>
-                            <p class="text-@alertClass"><b>Balanço: R$ @member.Value.ToString("F2", CultureInfo.CurrentCulture)</b></p>
-                        </div>
-                    }
-                </div>
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <td class="text-left">
+                                Nome
+                            </td>
+                            <td class="text-right">
+                                Balanço
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var member in item.Members)
+                        {
+                            var alertClass = member.Value > 0 ? "success" : (member.Value == 0 ? "info" : "danger");
+                            <tr class="@alertClass">
+                                <td class="text-@alertClass text-left">
+                                    @member.Key.Name
+                                </td>
+                                <td class="text-@alertClass text-right">
+                                    <b>@member.Value.ToString("F2", CultureInfo.CurrentCulture)</b>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
             <div class="panel-footer">
-                @item.PaymentObservation
+                <table>
+                    <thead>
+                        <tr>
+                            <td>
+                                <b>Observações</b>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (string observation in item.PaymentObservation)
+                        {
+                            <tr>
+                                <td>
+                                    @observation
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
 
         </div>

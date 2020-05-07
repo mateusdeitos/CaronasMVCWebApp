@@ -83,9 +83,10 @@ namespace CaronasMVCWebApp.Controllers
 
         public async Task<IActionResult> AnalyticalReport(DateTime? minDate, DateTime? maxDate, int memberId)
         {
-            var lastMonth = DateTime.Now.AddMonths(-1);
+            
             if (!minDate.HasValue)
             {
+                var lastMonth = DateTime.Now.AddMonths(-1);
                 minDate = new DateTime(lastMonth.Year, lastMonth.Month, 1);
             }
             if (!maxDate.HasValue)

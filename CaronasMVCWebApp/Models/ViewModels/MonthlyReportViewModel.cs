@@ -14,6 +14,6 @@ namespace CaronasMVCWebApp.Models.ViewModels
 
         public DateTime Period { get; set; }
         public Dictionary<Member, double> Members { get; set; }
-        public string PaymentObservation { get; set; }
+        public List<string> PaymentObservation { get; set; }
     }
 }
