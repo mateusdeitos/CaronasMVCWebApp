@@ -8,7 +8,7 @@ using CaronasMVCWebApp.Services;
 using CaronasMVCWebApp.Models.ViewModels;
 using System;
 using CaronasMVCWebApp.Models.Enums;
-using NUglify.Helpers;
+using X.PagedList;
 
 namespace CaronasMVCWebApp.Controllers
 {
@@ -31,12 +31,14 @@ namespace CaronasMVCWebApp.Controllers
         }
 
         // GET: Rides
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
             var caronas_app_dbContext = await _context.Ride.Include(r => r.Destiny).Include(r => r.Driver).OrderByDescending(r => r.Date).ToListAsync();
             var results = caronas_app_dbContext.Select(r => r.Id).Distinct().ToList();
 
             List<Ride> rides = new List<Ride>();
+
+
             foreach (int id in results)
             {
                 var ride = await _context.Ride.Where(r => r.Id == id).FirstOrDefaultAsync();
@@ -47,7 +49,10 @@ namespace CaronasMVCWebApp.Controllers
                 rides.Add(ride);
 
             }
-            return View(rides);
+
+            var pageNumber = page ?? 1;
+            var paginatedResult = await rides.ToPagedListAsync(pageNumber, 5);
+            return View(paginatedResult);
         }
         public async Task<IActionResult> MonthlyReport()
         {

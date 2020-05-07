@@ -1,6 +1,8 @@
 ﻿@using System.Globalization
 @using CaronasMVCWebApp.Models.Enums
-@model List<CaronasMVCWebApp.Models.Ride>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@model X.PagedList.IPagedList<CaronasMVCWebApp.Models.Ride>
 
 @{
     ViewData["Title"] = "Caronas cadastradas";
@@ -30,10 +32,10 @@
         <strong>  Novo</strong>
     </a>
 </p>
-@{ 
+@{
     var culture = new System.Globalization.CultureInfo("pt-BR");
     TextInfo diaDaSemana = new CultureInfo("pt-BR", false).TextInfo;
-} 
+}
 @foreach (var item in Model)
 {
 
@@ -65,3 +67,7 @@
         </div>
     </div>
 }
+<div class="text-center">
+
+    @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page }))
+</div>
