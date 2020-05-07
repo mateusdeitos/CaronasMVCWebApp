@@ -54,7 +54,7 @@ namespace CaronasMVCWebApp.Controllers
             var paginatedResult = await rides.ToPagedListAsync(pageNumber, 5);
             return View(paginatedResult);
         }
-        public async Task<IActionResult> MonthlyReport()
+        public async Task<IActionResult> MonthlyReport(int? page)
         {
             List<MonthlyReportViewModel> viewModel = new List<MonthlyReportViewModel>();
             List<DateTime> dates = _context.Ride.Select(r=>r.Date)
@@ -82,11 +82,12 @@ namespace CaronasMVCWebApp.Controllers
 
             }
 
-
-            return View(viewModel);
+            var pageNumber = page ?? 1;
+            var paginatedResult = await viewModel.ToPagedListAsync(pageNumber, 2);
+            return View(paginatedResult);
         }
 
-        public async Task<IActionResult> AnalyticalReport(DateTime? minDate, DateTime? maxDate, int memberId)
+        public async Task<IActionResult> AnalyticalReport(DateTime? minDate, DateTime? maxDate, int memberId, int? page)
         {
             
             if (!minDate.HasValue)
@@ -111,9 +112,11 @@ namespace CaronasMVCWebApp.Controllers
             ViewData["minDate"] = minDate.Value.ToString("yyyy-MM-dd");
             ViewData["maxDate"] = maxDate.Value.ToString("yyyy-MM-dd");
             ViewBag.Members = await _memberService.FindAllAsync();
-            ViewBag.Member = member;
+            ViewData["memberId"] = memberId;
 
-            return View(view);
+            var pageNumber = page ?? 1;
+            var paginatedResult = await view.ToPagedListAsync(pageNumber, 10);
+            return View(paginatedResult);
         }
 
         // GET: Rides

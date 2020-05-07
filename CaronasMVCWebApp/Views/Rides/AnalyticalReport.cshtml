@@ -1,11 +1,14 @@
 ﻿@using System.Globalization
 @using CaronasMVCWebApp.Models.Enums
-@model List<CaronasMVCWebApp.Models.ViewModels.AnalyticalReportViewModel>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@model X.PagedList.IPagedList<CaronasMVCWebApp.Models.ViewModels.AnalyticalReportViewModel>
 
 @{
     ViewData["Title"] = "Relatório analítico";
     DateTime minDate = DateTime.Parse(ViewData["minDate"] as string);
     DateTime maxDate = DateTime.Parse(ViewData["maxDate"] as string);
+    int memberId = (int) ViewData["memberId"];
 
     var culture = new System.Globalization.CultureInfo("pt-BR");
     TextInfo diaDaSemana = new CultureInfo("pt-BR", false).TextInfo;
@@ -36,18 +39,18 @@
             <div class="form-group">
                 <div class="form-group mb-3">
                     <label class="input-group-text" for="minDate"><b>Data inicial</b></label>
-                    <input type="date" class="form-control" value="@ViewData["minDate"]" name="minDate">
+                    <input type="date" asp-for="@minDate" class="form-control" value="@ViewData["minDate"]" name="minDate">
                 </div>
                 <div class="form-group mb-3">
                     <label class="input-group-text" for="maxDate"><b>Data final</b></label>
 
-                    <input type="date" class="form-control" value="@ViewData["maxDate"]" name="maxDate">
+                    <input type="date" asp-for="@maxDate" class="form-control" value="@ViewData["maxDate"]" name="maxDate">
                 </div>
                 <div class="form-group mb-3">
                     <label class="input-group-text" for="memberId"><b>Participante</b></label>
 
-                    <select class="form-control" name="memberId" value="@ViewBag.Member.Id" asp-items="@(new SelectList(ViewBag.Members, "Id",
-                    "Name", @ViewBag.Member.Id))"></select>
+                    <select class="form-control" asp-for="@memberId" name="memberId" value="@memberId" asp-items="@(new SelectList(ViewBag.Members, "Id",
+                    "Name", @memberId))"></select>
                 </div>
                 <button type="submit" data-toggle="tooltip" data-placement="bottom" title="Aplicar filtros" class="btn btn-default ">
                     <i class="fa fa-filter">
@@ -104,3 +107,9 @@
         </div>
     </div>
 }
+
+
+<div class="text-center">
+
+    @Html.PagedListPager((IPagedList)Model, page => Url.Action("AnalyticalReport", new { minDate, maxDate, memberId, page }))
+</div>

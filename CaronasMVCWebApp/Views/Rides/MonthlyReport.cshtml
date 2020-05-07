@@ -1,6 +1,8 @@
 ﻿@using System.Globalization
 @using CaronasMVCWebApp.Models.Enums
-@model List<CaronasMVCWebApp.Models.ViewModels.MonthlyReportViewModel>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@model X.PagedList.IPagedList<CaronasMVCWebApp.Models.ViewModels.MonthlyReportViewModel>
 
 @{
     ViewData["Title"] = "Relatório sintético";
@@ -84,7 +86,7 @@
                         @foreach (string observation in item.PaymentObservation)
                         {
                             <tr>
-                                <td>
+                                <td class="text-info">
                                     @observation
                                 </td>
                             </tr>
@@ -97,3 +99,8 @@
     </div>
 
 }
+
+<div class="text-center">
+
+    @Html.PagedListPager((IPagedList)Model, page => Url.Action("MonthlyReport",  new { page }))
+</div>
