@@ -8,8 +8,8 @@ namespace CaronasMVCWebApp.Models
     {
         public Member()
         {
-            RideDriver = new HashSet<Ride>();
-            RidePassenger = new HashSet<Ride>();
+            RideDriver = new List<Ride>();
+            RidePassenger = new List<Ride>();
         }
 
         public int Id { get; set; }
@@ -33,5 +33,6 @@ namespace CaronasMVCWebApp.Models
 
         public ICollection<Ride> RideDriver { get; set; }
         public ICollection<Ride> RidePassenger { get; set; }
+
     }
 }

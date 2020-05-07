@@ -64,7 +64,7 @@
 
 <div class="alert alert-@alertClass">
     <h4>Seu saldo no período:</h4>
-    <h3 class="text-@alertClass"><b>R$ @ViewBag.Total.ToString("F2", CultureInfo.InvariantCulture)</b></h3>
+    <h3 class="text-@alertClass"><b>R$ @ViewBag.Total.ToString("F2", CultureInfo.CurrentCulture)</b></h3>
 </div>
 
 @foreach (var item in Model)
@@ -78,7 +78,7 @@
                 <h4 class="panel-title">
                     <a data-toggle="collapse" href="#@item.Ride.Id">
                         @item.Ride.Date.ToShortDateString() - @diaDaSemana.ToTitleCase(culture.DateTimeFormat.GetDayName(item.Ride.Date.DayOfWeek))
-                        <span class="pull-right">Saldo: @item.Balance.ToString("F2", CultureInfo.InvariantCulture)</span>
+                        <span class="pull-right">Saldo: @item.Balance.ToString("F2", CultureInfo.CurrentCulture)</span>
                     </a>
 
                 </h4>

@@ -8,6 +8,7 @@ using CaronasMVCWebApp.Services;
 using CaronasMVCWebApp.Models.ViewModels;
 using System;
 using CaronasMVCWebApp.Models.Enums;
+using NUglify.Helpers;
 
 namespace CaronasMVCWebApp.Controllers
 {
@@ -48,6 +49,37 @@ namespace CaronasMVCWebApp.Controllers
             }
             return View(rides);
         }
+        public async Task<IActionResult> MonthlyReport()
+        {
+            List<MonthlyReportViewModel> viewModel = new List<MonthlyReportViewModel>();
+            List<DateTime> dates = _context.Ride.Select(r=>r.Date)
+              .Select(d => new DateTime(d.Year, d.Month, 1))
+              .Distinct()
+              .OrderBy(r=>r.Year)
+              .ThenBy(r=>r.Month)
+              .ToList();
+
+            List<Member> members = await _memberService.FindAllAsync();
+
+            foreach (DateTime period in dates)
+            {
+                MonthlyReportViewModel reportObject = new MonthlyReportViewModel();
+                reportObject.Period = period;
+
+                foreach (Member member in members)
+                {
+                    double balance = _memberService.GetMemberBalance(member, period);
+                    reportObject.Members.Add(member, balance);
+                    
+                }
+                reportObject.PaymentObservation = _memberService.GetMemberPaymentObservation(reportObject);
+                viewModel.Add(reportObject);
+
+            }
+
+
+            return View(viewModel);
+        }
 
         public async Task<IActionResult> AnalyticalReport(DateTime? minDate, DateTime? maxDate, int memberId)
         {
@@ -69,7 +101,7 @@ namespace CaronasMVCWebApp.Controllers
 
             var result = await _rideService.FindByDateAsync(minDate, maxDate);
             var view = await _rideService.GenerateAnalyticalReportForMember(result, member);
-            ViewBag.Total = view.Select(r=>r.Balance).Sum();
+            ViewBag.Total = view.Select(r => r.Balance).Sum();
             ViewData["minDate"] = minDate.Value.ToString("yyyy-MM-dd");
             ViewData["maxDate"] = maxDate.Value.ToString("yyyy-MM-dd");
             ViewBag.Members = await _memberService.FindAllAsync();

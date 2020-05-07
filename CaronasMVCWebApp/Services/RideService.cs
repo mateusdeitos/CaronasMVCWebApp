@@ -70,6 +70,29 @@ namespace CaronasMVCWebApp.Services
 
         }
 
+        public async Task<List<Ride>> FindByMonthAsync(DateTime? month)
+        {
+            var rideMonth = month.Value.Month;
+            var rideYear = month.Value.Year;
+
+            var rides = await _context.Ride.Where(r => r.Date.Month == rideMonth && r.Date.Year == rideYear).ToListAsync();
+
+            return rides;
+        }
+
+        public async Task<List<Ride>> FindRidesByDriverAndPeriod(Member driver, DateTime period)
+        {
+            return await _context.Ride.Where(r => r.DriverId == driver.Id && 
+                                             r.Date.Month == period.Month &&
+                                             r.Date.Year == period.Year).ToListAsync();
+        }
+        public async Task<List<Ride>> FindRidesByPassengerAndPeriod(Member passenger, DateTime period)
+        {
+            return await _context.Ride.Where(r => r.PassengerId == passenger.Id &&
+                                             r.Date.Month == period.Month &&
+                                             r.Date.Year == period.Year).ToListAsync();
+        }
+
         public async Task<int> FindNextIdAsync()
         {
             return await _context.Ride.AnyAsync() ? await _context.Ride.MaxAsync(r => r.Id + 1) : 1;
