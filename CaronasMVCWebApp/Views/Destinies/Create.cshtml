@@ -1,6 +1,5 @@
 ﻿@model CaronasMVCWebApp.Models.Destiny
 
-<h2>@ViewBag.Title</h2>
 
 @if (TempData["ErrorMessage"] != null)
 {
@@ -10,62 +9,62 @@
     </div>
 }
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                @if (ViewBag.Action == "Details" || ViewBag.Action == "Delete")
-                {
-                    <input asp-for="Name" class="form-control" disabled />
-                }
-                else
-                {
-                    <input asp-for="Name" class="form-control" />
-                }
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CostPerPassenger" class="control-label"></label>
-                @if (ViewBag.Action == "Details" || ViewBag.Action == "Delete")
-                {
-                    <input asp-for="CostPerPassenger" class="form-control" disabled />
-                }
-                else
-                {
-                    <input asp-for="CostPerPassenger" class="form-control" />
-                }
-                <span asp-validation-for="CostPerPassenger" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <a asp-action="Index" data-toggle="tooltip" data-placement="bottom" title="Voltar" class="btn btn-default fa fa-arrow-circle-left">
-                 
-                </a>
-                @if (ViewBag.Action == "Delete")
-                {
-                    <button type="submit" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Salvar">
-                        <i class="fa fa-trash">
-                        </i>
-                        <strong>  Deletar?</strong>
-                    </button>
-                }
-                @if (ViewBag.Action == "Edit" || ViewBag.Action == "Create")
-                {
-                    <button type="submit" asp-action="@ViewBag.Action" asp-route-id="@Model.Id" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Salvar">
-                        <i class="fa fa-save">
-                        </i>
-                        <strong>  Salvar</strong>
-                    </button>
-                }
-                @if (ViewBag.Action == "Details")
-                {
-                    <a asp-action="Edit" data-toggle="tooltip" data-placement="bottom" title="Alterar dados" class="btn btn-default fa fa-pencil-alt" asp-route-id="@Model.Id"></a>
-                    <a asp-action="Delete" data-toggle="tooltip" data-placement="bottom" title="Excluir participante" class="btn btn-danger fa fa-trash" asp-route-id="@Model.Id"></a>
-                }
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-md-4">
+            <h2>@ViewBag.Title</h2>
+            <hr />
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    @if (ViewBag.Action == "Details" || ViewBag.Action == "Delete")
+                    {
+                        <input asp-for="Name" class="form-control" disabled />
+                    }
+                    else
+                    {
+                        <input asp-for="Name" class="form-control" />
+                    }
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CostPerPassenger" class="control-label"></label>
+                    @if (ViewBag.Action == "Details" || ViewBag.Action == "Delete")
+                    {
+                        <input asp-for="CostPerPassenger" class="form-control" disabled />
+                    }
+                    else
+                    {
+                        <input asp-for="CostPerPassenger" class="form-control" />
+                    }
+                    <span asp-validation-for="CostPerPassenger" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <a asp-action="Index" data-toggle="tooltip" data-placement="bottom" title="Voltar" class="btn btn-default fa fa-arrow-circle-left">
 
-            </div>
-        </form>
+                    </a>
+                    @if (ViewBag.Action == "Delete")
+                    {
+                        <button type="submit" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger fa fa-trash" data-toggle="tooltip" data-placement="bottom" title="Salvar">
+                            
+                        </button>
+                    }
+                    @if (ViewBag.Action == "Edit" || ViewBag.Action == "Create")
+                    {
+                        <button type="submit" asp-action="@ViewBag.Action" asp-route-id="@Model.Id" class="btn btn-success fa fa-save" data-toggle="tooltip" data-placement="bottom" title="Salvar">
+                            
+                        </button>
+                    }
+                    @if (ViewBag.Action == "Details")
+                    {
+                        <a asp-action="Edit" data-toggle="tooltip" data-placement="bottom" title="Alterar dados" class="btn btn-default fa fa-pencil-alt" asp-route-id="@Model.Id"></a>
+                        <a asp-action="Delete" data-toggle="tooltip" data-placement="bottom" title="Excluir participante" class="btn btn-danger fa fa-trash" asp-route-id="@Model.Id"></a>
+                    }
+
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

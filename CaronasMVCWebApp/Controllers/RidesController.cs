@@ -92,7 +92,7 @@ namespace CaronasMVCWebApp.Controllers
             
             if (!minDate.HasValue)
             {
-                var lastMonth = DateTime.Now.AddMonths(-1);
+                var lastMonth = _context.Ride.FirstOrDefault().Date;
                 minDate = new DateTime(lastMonth.Year, lastMonth.Month, 1);
             }
             if (!maxDate.HasValue)

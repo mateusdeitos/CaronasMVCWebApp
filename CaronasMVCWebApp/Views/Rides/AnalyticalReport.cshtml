@@ -8,7 +8,7 @@
     ViewData["Title"] = "Relatório analítico";
     DateTime minDate = DateTime.Parse(ViewData["minDate"] as string);
     DateTime maxDate = DateTime.Parse(ViewData["maxDate"] as string);
-    int memberId = (int) ViewData["memberId"];
+    int memberId = (int)ViewData["memberId"];
 
     var culture = new System.Globalization.CultureInfo("pt-BR");
     TextInfo diaDaSemana = new CultureInfo("pt-BR", false).TextInfo;
@@ -30,86 +30,87 @@
         @TempData["ErrorMessage"]
     </div>
 }
-<h2>@ViewData["Title"]</h2>
-<h3 class="pull-right">Saldo total: @ViewBag.Total</h3>
-<br />
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <form class="navbar-form navbar-left" role="search">
-            <div class="form-group">
-                <div class="form-group mb-3">
-                    <label class="input-group-text" for="minDate"><b>Data inicial</b></label>
-                    <input type="date" asp-for="@minDate" class="form-control" value="@ViewData["minDate"]" name="minDate">
-                </div>
-                <div class="form-group mb-3">
-                    <label class="input-group-text" for="maxDate"><b>Data final</b></label>
 
-                    <input type="date" asp-for="@maxDate" class="form-control" value="@ViewData["maxDate"]" name="maxDate">
-                </div>
-                <div class="form-group mb-3">
-                    <label class="input-group-text" for="memberId"><b>Participante</b></label>
 
-                    <select class="form-control" asp-for="@memberId" name="memberId" value="@memberId" asp-items="@(new SelectList(ViewBag.Members, "Id",
+<div class="jumbotron">
+    <h2>@ViewData["Title"]</h2>
+    <hr />
+    <nav class="nav nav-pills">
+        <div class="container-fluid">
+            <form class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                    <div class="form-group mb-3">
+                        <label class="input-group-text" for="minDate"><b>Data inicial</b></label>
+                        <input type="date" asp-for="@minDate" class="form-control" value="@ViewData["minDate"]" name="minDate">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="input-group-text" for="maxDate"><b>Data final</b></label>
+
+                        <input type="date" asp-for="@maxDate" class="form-control" value="@ViewData["maxDate"]" name="maxDate">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="input-group-text" for="memberId"><b>Participante</b></label>
+
+                        <select class="form-control" asp-for="@memberId" name="memberId" value="@memberId" asp-items="@(new SelectList(ViewBag.Members, "Id",
                     "Name", @memberId))"></select>
+                    </div>
+                    <button type="submit" data-toggle="tooltip" data-placement="bottom" title="Aplicar filtros" class="btn btn-default ">
+                        <i class="fa fa-filter">
+                        </i>
+                        <strong>  Filtrar</strong>
+                    </button>
                 </div>
-                <button type="submit" data-toggle="tooltip" data-placement="bottom" title="Aplicar filtros" class="btn btn-default ">
-                    <i class="fa fa-filter">
-                    </i>
-                    <strong>  Filtrar</strong>
-                </button>
-            </div>
-        </form>
+            </form>
+        </div>
+    </nav>
+
+    <br />
+    <div class="alert alert-@alertClass">
+        <h4>Seu saldo no período:</h4>
+        <h3 class="text-@alertClass"><b>R$ @ViewBag.Total.ToString("F2", CultureInfo.CurrentCulture)</b></h3>
     </div>
 
-</nav>
+    @foreach (var item in Model)
+    {
+        var panelClass = item.Balance >= 0 ? "panel-success" : "panel-danger";
 
 
+        <div class="panel-group">
+            <div class="panel @panelClass">
+                <div class="panel-heading" data-toggle="collapse" data-target="#@item.Ride.Id" role="button">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" href="#@item.Ride.Id">
+                            @item.Ride.Date.ToShortDateString() - @diaDaSemana.ToTitleCase(culture.DateTimeFormat.GetDayName(item.Ride.Date.DayOfWeek))
+                            <span class="pull-right">Saldo: @item.Balance.ToString("F2", CultureInfo.CurrentCulture)</span>
+                        </a>
 
-<div class="alert alert-@alertClass">
-    <h4>Seu saldo no período:</h4>
-    <h3 class="text-@alertClass"><b>R$ @ViewBag.Total.ToString("F2", CultureInfo.CurrentCulture)</b></h3>
-</div>
+                    </h4>
+                </div>
+                <div id="@item.Ride.Id" class="panel-collapse collapse">
+                    <ul class="list-group">
+                        <li class="list-group-item"><b>@Html.DisplayNameFor(Model => Model[0].Ride.DestinyId): </b>@Html.DisplayFor(modelItem => item.Ride.Destiny.Name)</li>
+                        <li class="list-group-item"><b>@Html.DisplayNameFor(Model => Model[0].Ride.DriverId): </b>@Html.DisplayFor(modelItem => item.Ride.Driver.Name)</li>
+                        <li class="list-group-item"><b>@Html.DisplayNameFor(Model => Model[0].Ride.PassengerId): </b>@Html.DisplayFor(modelItem => item.Ride.PassengerId)</li>
+                        <li class="list-group-item"><b>@Html.DisplayNameFor(Model => Model[0].Ride.PaymentStatus): </b>@Html.DisplayFor(modelItem => item.Ride.PaymentStatus)</li>
+                    </ul>
+                    <div class="panel-footer">
 
-@foreach (var item in Model)
-{
-    var panelClass = item.Balance >= 0 ? "panel-success" : "panel-danger";
+                        <div class="btn-group btn-sm">
 
+                            <a asp-action="Details" asp-route-id="@item.Ride.Id" class="btn btn-info  fa fa-search" data-toggle="tooltip" data-placement="bottom" title="Detalhes"></a>
+                            <a asp-action="Edit" asp-route-id="@item.Ride.Id" class="btn btn-default fa fa-pencil-alt" data-toggle="tooltip" data-placement="bottom" title="Alterar"></a>
+                            <a asp-action="Delete" asp-route-id="@item.Ride.Id" class="btn btn-danger  fa fa-trash" data-toggle="tooltip" data-placement="bottom" title="Deletar"></a>
 
-    <div class="panel-group">
-        <div class="panel @panelClass">
-            <div class="panel-heading" data-toggle="collapse" data-target="#@item.Ride.Id" role="button">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" href="#@item.Ride.Id">
-                        @item.Ride.Date.ToShortDateString() - @diaDaSemana.ToTitleCase(culture.DateTimeFormat.GetDayName(item.Ride.Date.DayOfWeek))
-                        <span class="pull-right">Saldo: @item.Balance.ToString("F2", CultureInfo.CurrentCulture)</span>
-                    </a>
-
-                </h4>
-            </div>
-            <div id="@item.Ride.Id" class="panel-collapse collapse">
-                <ul class="list-group">
-                    <li class="list-group-item"><b>@Html.DisplayNameFor(Model => Model[0].Ride.DestinyId): </b>@Html.DisplayFor(modelItem => item.Ride.Destiny.Name)</li>
-                    <li class="list-group-item"><b>@Html.DisplayNameFor(Model => Model[0].Ride.DriverId): </b>@Html.DisplayFor(modelItem => item.Ride.Driver.Name)</li>
-                    <li class="list-group-item"><b>@Html.DisplayNameFor(Model => Model[0].Ride.PassengerId): </b>@Html.DisplayFor(modelItem => item.Ride.PassengerId)</li>
-                    <li class="list-group-item"><b>@Html.DisplayNameFor(Model => Model[0].Ride.PaymentStatus): </b>@Html.DisplayFor(modelItem => item.Ride.PaymentStatus)</li>
-                </ul>
-                <div class="panel-footer">
-
-                    <div class="btn-group btn-sm">
-
-                        <a asp-action="Details" asp-route-id="@item.Ride.Id" class="btn btn-info  fa fa-search" data-toggle="tooltip" data-placement="bottom" title="Detalhes"></a>
-                        <a asp-action="Edit" asp-route-id="@item.Ride.Id" class="btn btn-default fa fa-pencil-alt" data-toggle="tooltip" data-placement="bottom" title="Alterar"></a>
-                        <a asp-action="Delete" asp-route-id="@item.Ride.Id" class="btn btn-danger  fa fa-trash" data-toggle="tooltip" data-placement="bottom" title="Deletar"></a>
-
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    }
+
+
+    <div class="text-center">
+
+        @Html.PagedListPager((IPagedList)Model, page => Url.Action("AnalyticalReport", new { minDate, maxDate, memberId, page }))
     </div>
-}
-
-
-<div class="text-center">
-
-    @Html.PagedListPager((IPagedList)Model, page => Url.Action("AnalyticalReport", new { minDate, maxDate, memberId, page }))
 </div>

@@ -17,7 +17,6 @@
     <None Include="wwwroot\images\banner3.svg" />
     <None Include="wwwroot\js\site.js" />
     <None Include="wwwroot\js\site.min.js" />
-    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.svg" />
     <None Include="wwwroot\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.woff2" />
     <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />

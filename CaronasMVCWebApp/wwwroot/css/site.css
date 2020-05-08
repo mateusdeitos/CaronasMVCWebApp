@@ -2,9 +2,6 @@
 for details on configuring this project to bundle and minify static web assets. */
 body {
     padding-top: 0px;
-    padding-bottom: 20px;
-    background-image: url(../Images/background.png);
-    background-repeat: no-repeat;
 }
 
 /* Wrapping element */

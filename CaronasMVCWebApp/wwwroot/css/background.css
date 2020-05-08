@@ -1,11 +1,12 @@
 ﻿.custom-background-image {
-    background-image: url("/w3images/background.jpg");
+    background-image: url("/images/background.png");
     background-color: rgb(255, 255, 255);
-    height: auto;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: auto;
-    position: relative;
+    /*height: 150%;
+    width: 100%;
+    background-position: bottom;
+    background-repeat: repeat;
+    background-size: cover;
+    position: fixed;*/
 }
 
 .custom-background-text {

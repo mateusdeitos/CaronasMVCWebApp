@@ -26,81 +26,92 @@
         @TempData["ErrorMessage"]
     </div>
 }
-<h2>@ViewData["Title"]</h2>
-<br />
+<div class="jumbotron">
 
+    <h2>@ViewData["Title"]</h2>
+    <hr />
+    <br />
 
+    @foreach (var item in Model)
+    {
 
-@foreach (var item in Model)
-{
+        <div class="panel">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <p>
+                            @item.Period.ToString("yyyy") - @mes.ToTitleCase(culture.DateTimeFormat.GetMonthName(item.Period.Month))
+                        </p>
 
-    <div class="panel">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <p>
-                        @item.Period.ToString("yyyy") - @mes.ToTitleCase(culture.DateTimeFormat.GetMonthName(item.Period.Month))
-                    </p>
+                    </div>
+                </div>
 
-                </h4>
-            </div>
-
-            <div class="panel-body">
-                <table class="table table-responsive">
-                    <thead>
-                        <tr>
-                            <td class="text-left">
-                                Nome
-                            </td>
-                            <td class="text-right">
-                                Balanço
-                            </td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var member in item.Members)
-                        {
-                            var alertClass = member.Value > 0 ? "success" : (member.Value == 0 ? "info" : "danger");
-                            <tr class="@alertClass">
-                                <td class="text-@alertClass text-left">
-                                    @member.Key.Name
-                                </td>
-                                <td class="text-@alertClass text-right">
-                                    <b>@member.Value.ToString("F2", CultureInfo.CurrentCulture)</b>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-            <div class="panel-footer">
-                <table>
-                    <thead>
-                        <tr>
-                            <td>
-                                <b>Observações</b>
-                            </td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (string observation in item.PaymentObservation)
-                        {
+                <div class="panel-body">
+                    <table class="table table-responsive">
+                        <thead>
                             <tr>
-                                <td class="text-info">
-                                    @observation
+                                <td class="text-left">
+                                    <b>Nome</b>
+                                </td>
+                                <td class="text-right">
+                                    <b>Balanço</b>
                                 </td>
                             </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            @foreach (var member in item.Members)
+                            {
+                                var alertClass = member.Value > 0 ? "success" : (member.Value == 0 ? "info" : "danger");
+                                <tr class="@alertClass table-hover" s>
+                                    <td class="text-@alertClass text-left">
+                                        @{ 
+                                            DateTime minDate = new DateTime(item.Period.Year, item.Period.Month, 1);
+                                            DateTime maxDate = minDate.AddMonths(1).AddDays(-1);
+                                        }
+                                        <a asp-action="AnalyticalReport"
+                                           asp-route-minDate="@minDate.ToString("yyyy-MM-dd")"
+                                           asp-route-maxDate="@maxDate.ToString("yyyy-MM-dd")"
+                                           asp-route-memberId="@member.Key.Id">@member.Key.Name</a>
+                                    </td>
+                                    <td class="text-@alertClass text-right">
+                                        <b>@member.Value.ToString("F2", CultureInfo.CurrentCulture)</b>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
 
+                    <div class="panel-footer">
+                        <table class="table-hover">
+                            <thead>
+                                <tr>
+                                    <td>
+                                        <b>Observações</b>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (string observation in item.PaymentObservation)
+                                {
+                                    <tr>
+                                        <td class="text-info" role="list">
+                                            <b>@observation</b>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
         </div>
+
+    }
+
+    <div class="text-center">
+
+        @Html.PagedListPager((IPagedList)Model, page => Url.Action("MonthlyReport", new { page }))
     </div>
 
-}
-
-<div class="text-center">
-
-    @Html.PagedListPager((IPagedList)Model, page => Url.Action("MonthlyReport",  new { page }))
 </div>
