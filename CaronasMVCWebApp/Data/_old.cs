@@ -25,7 +25,8 @@ namespace CaronasMVCWebApp.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseMySql("server=localhost;port=3306;user=developer;password=123456;database=caronas_app_db");
+                //optionsBuilder.UseMySql("server=localhost;port=3306;user=developer;password=123456;database=caronas_app_db");
+                optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=caronas_db;Integrated Security=True");
             }
         }
 

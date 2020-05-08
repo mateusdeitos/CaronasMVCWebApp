@@ -8,9 +8,9 @@ namespace CaronasMVCWebApp.Services
 {
     public class DestinyService
     {
-        private readonly caronas_app_dbContext _context;
+        private readonly caronas_dbContext _context;
 
-        public DestinyService(caronas_app_dbContext context)
+        public DestinyService(caronas_dbContext context)
         {
             _context = context;
         }

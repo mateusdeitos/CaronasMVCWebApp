@@ -12,9 +12,9 @@ namespace CaronasMVCWebApp.Services
 {
     public class MemberService
     {
-        private readonly caronas_app_dbContext _context;
+        private readonly caronas_dbContext _context;
 
-        public MemberService(caronas_app_dbContext context)
+        public MemberService(caronas_dbContext context)
         {
             _context = context;
         }

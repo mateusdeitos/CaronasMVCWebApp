@@ -1,0 +1,45 @@
+<html>
+<head>
+    <title>SQL Server Migration Assistant: Assessment Report</title>
+    <link media="all" rel="stylesheet" type="text/css" href="css/image.css" />
+    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.expander-up').click(function (e) {
+                e.preventDefault();
+                $(this).parent().toggleClass('close'); $(this).toggleClass('close');
+                if (parent.main.rows != undefined) {
+                    if (parent.main.rows == "9,*") {
+                        parent.main.rows = "52,*";
+                        $(".image-block img").css("top", "25%");
+                    } else {
+                        parent.main.rows = "9,*";
+                        $(".image-block img").css("top", "75%");
+                    }
+                } else {
+                    if (top.frames['title'].rows == "9,*") {
+                        top.frames['title'].rows = "52,*";
+                        $(".image-block img").css("top", "25%");
+                    } else {
+                        top.frames['title'].rows = "9,*";
+                        $(".image-block img").css("top", "75%");
+                    }
+                }
+
+                $(this).attr(
+                    'aria-label',
+                    $(this).hasClass("close")
+                        ? "Header section collapsed, press Enter to expand"
+                        : "Header section expanded, press Enter to collapse");
+            });
+        });
+    </script>
+</head>
+<body>
+	<div class="image-block">
+	    <img src="img/banner.png" alt="Microsoft SQL Server Migration Assistant" class="image-block-img-banner">
+	    <a class="expander-up" href="#" aria-label="Header section expanded, press Enter to collapse" role="button"><span></span></a>
+        <img src="img/ms_logo.png" alt="Microsoft" class="image-block-img-ms-logo">
+	</div>
+</body>
+</html>

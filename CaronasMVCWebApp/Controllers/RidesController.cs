@@ -9,17 +9,18 @@ using CaronasMVCWebApp.Models.ViewModels;
 using System;
 using CaronasMVCWebApp.Models.Enums;
 using X.PagedList;
+using jsreport.AspNetCore;
 
 namespace CaronasMVCWebApp.Controllers
 {
     public class RidesController : Controller
     {
-        private readonly caronas_app_dbContext _context;
+        private readonly caronas_dbContext _context;
         private readonly MemberService _memberService;
         private readonly DestinyService _destinyService;
         private readonly RideService _rideService;
 
-        public RidesController(caronas_app_dbContext context,
+        public RidesController(caronas_dbContext context,
                                MemberService memberService,
                                DestinyService destinyService,
                                RideService rideService)
@@ -86,7 +87,7 @@ namespace CaronasMVCWebApp.Controllers
             var paginatedResult = await viewModel.ToPagedListAsync(pageNumber, 2);
             return View(paginatedResult);
         }
-
+        //[MiddlewareFilter(typeof(JsReportPipeline))]
         public async Task<IActionResult> AnalyticalReport(DateTime? minDate, DateTime? maxDate, int memberId, int? page)
         {
             

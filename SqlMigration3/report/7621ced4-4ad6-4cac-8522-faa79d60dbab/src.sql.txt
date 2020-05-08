@@ -1,0 +1,16 @@
+CREATE TABLE `ride` (
+  `Id` int NOT NULL,
+  `Date` datetime(6) NOT NULL,
+  `DestinyId` int NOT NULL,
+  `DriverId` int NOT NULL,
+  `PassengerId` int NOT NULL,
+  `paymentStatus` int NOT NULL DEFAULT '0',
+  `roundTrip` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`,`DestinyId`,`DriverId`,`PassengerId`),
+  KEY `IX_Ride_DestinyId` (`DestinyId`),
+  KEY `IX_Ride_DriverId` (`DriverId`),
+  KEY `FK_Ride_Member_PassengerId_idx` (`PassengerId`),
+  CONSTRAINT `FK_Ride_Destiny_DestinyId` FOREIGN KEY (`DestinyId`) REFERENCES `destiny` (`Id`),
+  CONSTRAINT `FK_Ride_Member_DriverId` FOREIGN KEY (`DriverId`) REFERENCES `member` (`Id`),
+  CONSTRAINT `FK_Ride_Member_PassengerId` FOREIGN KEY (`PassengerId`) REFERENCES `member` (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci

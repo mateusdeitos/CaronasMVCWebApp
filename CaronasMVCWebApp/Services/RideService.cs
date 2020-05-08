@@ -11,11 +11,11 @@ namespace CaronasMVCWebApp.Services
 {
     public class RideService
     {
-        private readonly caronas_app_dbContext _context;
+        private readonly caronas_dbContext _context;
         private readonly MemberService _memberService;
         private readonly DestinyService _destinyService;
 
-        public RideService(caronas_app_dbContext context,
+        public RideService(caronas_dbContext context,
                                MemberService memberService,
                                DestinyService destinyService)
         {

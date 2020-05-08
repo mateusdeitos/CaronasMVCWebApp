@@ -9,9 +9,9 @@ namespace CaronasMVCWebApp.Services
 {
     public class PassengerService
     {
-        private readonly caronas_app_dbContext _context;
+        private readonly caronas_dbContext _context;
 
-        public PassengerService(caronas_app_dbContext context)
+        public PassengerService(caronas_dbContext context)
         {
             _context = context;
         }

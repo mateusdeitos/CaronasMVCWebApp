@@ -11,9 +11,9 @@ namespace CaronasMVCWebApp.Controllers
 {
     public class MembersController : Controller
     {
-        private readonly caronas_app_dbContext _context;
+        private readonly caronas_dbContext _context;
 
-        public MembersController(caronas_app_dbContext context)
+        public MembersController(caronas_dbContext context)
         {
             _context = context;
         }

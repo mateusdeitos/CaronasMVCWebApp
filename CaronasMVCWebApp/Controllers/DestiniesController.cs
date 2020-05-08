@@ -11,9 +11,9 @@ namespace CaronasMVCWebApp.Controllers
 {
     public class DestiniesController : Controller
     {
-        private readonly caronas_app_dbContext _context;
+        private readonly caronas_dbContext _context;
 
-        public DestiniesController(caronas_app_dbContext context)
+        public DestiniesController(caronas_dbContext context)
         {
             _context = context;
         }

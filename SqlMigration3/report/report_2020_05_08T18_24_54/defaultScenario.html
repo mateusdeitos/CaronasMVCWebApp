@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>SQL Server Migration Assistant: Assessment Report</title>
+	<link media="all" rel="stylesheet" type="text/css" href="css/style.css" />
+	<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="js/icons.js"></script>
+	<script>
+
+	    window.onload = function () {
+	        getSrcTrg();
+	    }
+	    function getSrcTrg() {
+	        var path;
+	        path = top.tree.$(".nodeSel").attr("id");
+	        window.frames.srcButt.document.location.href = 'srcButtons.html';
+	        window.frames.trgButt.document.location.href = 'trgButtons.html';
+	        window.frames.src.document.location.href = path + '/src.html';
+	        window.frames.trg.document.location.href = path + '/trg.html';
+	    }
+
+	</script>
+</head>
+
+<FRAMESET cols="*,*" onload=getSrcTrg()>
+<FRAMESET frameSpacing=0 frameBorder=0 rows="35,*"   LEFTMARGIN="0" TOPMARGIN="0" MARGINWIDTH="0" MARGINHEIGHT="0">
+						<FRAME class="buttons" frameSpacing="2" marginHeight="0" src="about:blank" name="srcButt" marginWidth="0" scrolling="no" LEFTMARGIN="0" TOPMARGIN="0">
+						<FRAME class="src" src="about:blank" name="src" id="src">
+					</FRAMESET>
+					<FRAMESET frameSpacing=0 frameBorder=0 rows="35,*"  LEFTMARGIN="0" TOPMARGIN="0" MARGINWIDTH="0" MARGINHEIGHT="0">
+						<FRAME class="buttons" frameSpacing="0" marginHeight="0" src="about:blank" name="trgButt" marginWidth=0 scrolling=no LEFTMARGIN="0" TOPMARGIN="0">
+						<FRAME class="trg" src="about:blank" name="trg" id="trg">
+					</FRAMESET>
+					</FRAMESET>
+
+</html>

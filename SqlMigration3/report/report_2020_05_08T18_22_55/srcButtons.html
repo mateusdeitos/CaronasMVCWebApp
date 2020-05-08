@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>    
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />		  
+		<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+        <STYLE>
+			TD {border:'none'}
+			.panel  {
+						position:relative;    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFFFFFF, endColorstr=#FFBBBBBB, gradientType=0 );
+						background-Color: powderblue;width:100%;height:35px;width:100%;
+					border-bottom:1px solid BLACK;border-top:1px solid BLACK;
+					}
+
+			IMG    {
+				border:none;position:relative;top:1px;left:1px;height:16px;width:16px;}
+				.ispan    {border:'none';position:relative;top:6px;left:8px;height:16px;width:16px;}
+				.sourcespan    {border:'none';position:relative;top:8px;right:8px;font-family:Arial;font-size:12px;}
+				a.sourcelink    {color:blue}
+				a.sourcelink:visited    {color:blue}
+				.over {border:1px outset silver;position:relative;top:7px;
+			}
+
+			.mover 
+			{ 
+				
+				position:relative;top:6px;left:8px;height:16px;width:16px;
+				background-Color: lightsteelblue;
+				font-family:  Courier New, sans-serif; font-size: 12px;cursor:default;
+			}
+			.add-nav {width:100%;overflow:hidden;padding:0;margin:0;list-style:none;}
+			.add-nav li {float:left;padding:3px 7px;}
+			.add-nav li:first-child {padding:7px;}
+</STYLE>
+<script>
+
+    function onOver(s) {
+        s.className = 'mover';
+    }
+
+    function onOut(s) {
+        s.className = 'ispan';
+    }
+
+    function showRawSource() {
+        var path = top.tree.$(".nodeSel").attr("id");
+        window.open(path + '/src.sql.txt');
+    }
+
+    function sh() {
+        var fr = top.frames['node'].frames['main'];
+        var src = top.frames['node'].frames['srcButt'];
+        fr.cols = "400,*,*";
+        showButton.style.visibility = 'hidden';
+    }
+
+    function f(s) {
+        if (s == 1) {
+            obj = parent.src.$('#prevProblem');
+            obj.click();
+        }
+        if (s == 2) {
+            obj = parent.src.$('#nextProblem');
+            obj.click();
+        }
+        if (s == 3) {
+            obj = parent.src.$('#prevSibling');
+            obj.click();
+        }
+        if (s == 4) {
+            obj = parent.src.$('#nextSibling');
+            obj.click();
+        }
+        if (s == 5) {
+            obj = parent.src.$('#prevBookmark');
+            obj.click();
+        }
+        if (s == 6) {
+            obj = parent.src.$('#nextBookmark');
+            obj.click();
+        }
+        if (s == 7) {
+            obj = parent.src.$('#clearBookmarks');
+            obj.click();
+        }
+    }
+
+    function getSrc() {
+        var fr = top.frames['node'];
+
+        var src = null;
+
+        if (fr == undefined) {
+            src = top.frames['src'];
+        }
+        else {
+            src = fr.frames['src'];
+        }
+
+        return src;
+    }
+
+</script>
+
+</HEAD>
+<BODY  HEIGHT='30px' bgcolor='lavender'>
+<div class='panel'>
+
+<ul class="add-nav">
+	<li style="border-right:1px solid gray;"><span style="font-family:Arial;font-size:12px; position:relative;">&nbsp;Source</span></li>
+	<li><input class="ispan" id="previous_problem" type="image" src='img/previous_problem.gif' onclick='f(1)' title='Previous problem' onmouseover="onOver(this);"  onmouseout="onOut(this);" /> </li>
+      <li><input class="ispan" id="next_problem" type="image" src='img/next_problem.gif' onclick='f(2)' title='Next problem' onmouseover="onOver(this);"  onmouseout="onOut(this);" /></li>
+      <li><input class="ispan" id="previous_bookmark" type="image" src='img/previous_bookmark.gif' onclick='f(5)' title='Previous bookmark' onmouseover="onOver(this);"  onmouseout="onOut(this);" /></li>
+      <li><input class="ispan" id="next_bookmark" type="image" src='img/next_bookmark.gif' onclick='f(6)' title='Next bookmark' onmouseover="onOver(this);"  onmouseout="onOut(this);" /></li>
+      <li><input class="ispan" id="clear_bookmarks" type="image" src='img/clear_bookmarks.gif' onclick='f(7)' title='Clear bookmarks' onmouseover="onOver(this);"  onmouseout="onOut(this);" /></li>
+      <li style="float:right;text-align: right;"> <span class="sourcespan" style="top:3px;"><a class="sourcelink" href="javascript:showRawSource()">Raw Source</a></span></li>
+</ul>
+</div>
+
+</BODY>
+</HTML>
+

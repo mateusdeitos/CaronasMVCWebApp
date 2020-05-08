@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>SQL Server Migration Assistant: Assessment Report</title>
+	<link media="all" rel="stylesheet" type="text/css" href="css/style.css" />
+	<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="js/icons.js"></script>
+	<script>
+	window.onload = function(){
+		getSrcTrg();
+	}
+		function getSrcTrg(){
+			var path;
+			path = top.tree.$(".nodeSel").attr("id");
+			if (window.frames.src) {
+			    window.frames.src.document.location.href = path + '/src.html';
+			}
+			if (window.frames.trg) {
+			    window.frames.trg.document.location.href = path + '/trg.html';
+			}
+			if (window.frames.srcButt) {
+			    window.frames.srcButt.document.location.href = 'srcButtons.html';
+			}
+			if (window.frames.trgButt) {
+			    window.frames.trgButt.document.location.href = 'trgButtons.html';
+			}
+		}
+	</script>
+</head>
+<FRAMESET rows='36,*' >
+	<FRAME class='buttons' marginHeight='0' src="statButtons.html" name='statButt' border="0" frameborder="0" framespacing="0" marginWidth='0' scrolling='no' bgcolor="mistyrose" LEFTMARGIN="0" TOPMARGIN="0" noresize>
+	<FRAME src="defaultScenario.html" LEFTMARGIN="0" TOPMARGIN="0" name="testScen" border="0" frameborder="0" framespacing="0" noresize>
+</FRAMESET>
+</html>

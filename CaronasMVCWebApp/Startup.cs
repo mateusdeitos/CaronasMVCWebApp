@@ -7,6 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using CaronasMVCWebApp.Services;
 using CaronasMVCWebApp.Models;
+using jsreport.AspNetCore;
+using jsreport.Local;
+using jsreport.Binary;
 
 namespace CaronasMVCWebApp
 {
@@ -31,8 +34,12 @@ namespace CaronasMVCWebApp
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddDbContext<caronas_app_dbContext>(options => options.UseMySql(Configuration.GetConnectionString("caronas_app_dbContext")));
+            services.AddDbContext<caronas_dbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("caronas_app_dbContext")));
 
+            services.AddJsReport(new LocalReporting()
+                .UseBinary(JsReportBinary.GetBinary())
+                .AsUtility()
+                .Create());
             services.AddScoped<MemberService>();
             services.AddScoped<DestinyService>();
             services.AddScoped<RideService>();
