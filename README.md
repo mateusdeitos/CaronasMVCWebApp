@@ -1,5 +1,5 @@
 # CaronasMVCWebApp
-Aplicativo Web MVC desenvolvido com ASP .NET Core para controlar o histórico de caronas entre um grupo de pessoas.
+Web MVC App developer with ASP .NET Core to control and store the ride history between groups of people.
 
 ## Demonstration
 
