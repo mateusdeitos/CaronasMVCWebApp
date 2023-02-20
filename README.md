@@ -1,5 +1,5 @@
 # CaronasMVCWebApp
-Web MVC App developer with ASP .NET Core to control and store the ride history between groups of people.
+Web MVC App developed with ASP .NET Core to control and store the ride history between groups of people.
 
 ## Demonstration
 
